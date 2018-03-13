@@ -11,7 +11,15 @@
 /*
  * Registrar
  */
--- Aquí va tu código.
+ DROP TABLE IF EXISTS 'usuario';
+ CREATE TABLE 'usuario' (
+   'ID' int(11) NOT NULL AUTO_INCREMENT,
+   'nombre' varchar(20) NOT NULL,
+   'correo' varchar(20) NOT NULL
+   'password' varchar(40) NOT NULL,
+
+   PRIMARY KEY ('ID')
+ )
 
 /*
  * Iniciar sesión
@@ -28,4 +36,3 @@
 /*
  * Realizar pregunta
  */-- Aquí va tu código.
-
