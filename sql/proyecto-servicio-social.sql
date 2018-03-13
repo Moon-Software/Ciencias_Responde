@@ -14,7 +14,15 @@ ID_ADMIN INTEGER CONSTRAINT AdminKey REFERENCES ADMINISTRADOR(ID_ADMIN)
 /*
  * Registrar
  */
--- Aquí va tu código.
+ DROP TABLE IF EXISTS 'USUARIO';
+ CREATE TABLE 'USUARIO' (
+   'ID' int(11) NOT NULL AUTO_INCREMENT,
+   'nombre' varchar(20) NOT NULL,
+   'correo' varchar(20) NOT NULL
+   'password' varchar(40) NOT NULL,
+
+   PRIMARY KEY ('ID')
+ )
 
 /*
  * Iniciar sesión
@@ -89,6 +97,8 @@ ID_ADMIN INTEGER CONSTRAINT AdminKeyCerrar REFERENCES ADMINISTRADOR(ID_ADMIN)
 
 
 /*
+ * Realizar pregunta
+ *
  * Caso de uso: Crear comentarios
  */
 CREATE TABLE Comentario {
