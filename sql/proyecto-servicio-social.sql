@@ -6,7 +6,10 @@
 /*
  * Avistar
  */
--- Aquí va tu código.
+CREATE TABLE BUSCAR(
+ID_USUARIO INTEGER CONSTRAINT UsuarioKey REFERENCES USUARIO(ID_USUARIO),
+ID_ADMIN INTEGER CONSTRAINT AdminKey REFERENCES ADMINISTRADOR(ID_ADMIN)	
+);
 
 /*
  * Registrar
@@ -78,7 +81,12 @@ commit;
 
 /*
  * Cerrar sesión
- */-- Aquí va tu código.
+ */
+CREATE TABLE CERRAR_SESION(
+ID_USUARIO INTEGER CONSTRAINT UsuarioKeyCerrar REFERENCES USUARIO(ID_USUARIO),
+ID_ADMIN INTEGER CONSTRAINT AdminKeyCerrar REFERENCES ADMINISTRADOR(ID_ADMIN)	
+);
+
 
 /*
  * Caso de uso: Crear comentarios
