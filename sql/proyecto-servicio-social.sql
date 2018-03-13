@@ -11,8 +11,8 @@
 /*
  * Registrar
  */
- DROP TABLE IF EXISTS 'usuario';
- CREATE TABLE 'usuario' (
+ DROP TABLE IF EXISTS 'USUARIO';
+ CREATE TABLE 'USUARIO' (
    'ID' int(11) NOT NULL AUTO_INCREMENT,
    'nombre' varchar(20) NOT NULL,
    'correo' varchar(20) NOT NULL
