@@ -20,6 +20,7 @@ ID_ADMIN INTEGER CONSTRAINT AdminKey REFERENCES ADMINISTRADOR(ID_ADMIN)
    'nombre' varchar(20) NOT NULL,
    'correo' varchar(20) NOT NULL
    'password' varchar(40) NOT NULL,
+   'imagen' bytea,
 
    PRIMARY KEY ('ID')
  )
