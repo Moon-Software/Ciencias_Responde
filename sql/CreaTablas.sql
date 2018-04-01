@@ -22,11 +22,11 @@ CREATE TABLE USUARIO(
 ID_Usuario INTEGER PRIMARY KEY,
 Correo VARCHAR2(50) NOT NULL,
 Nombre VARCHAR2(50) NOT NULL,
-Foto VARCHAR2(50) NOT NULL, -- No estoy seguro del tipo de este atributo.
+Foto BLOB,
 Contrasenia VARCHAR2(15) NOT NULL,
 F_Registro VARCHAR2(50) NOT NULL,
-Es_Admin INTEGER NOT NULL, -- 0 = False, 1 = True. (No sé si en PostgreSQL funcionen los booleanos)
-Sesion VARCHAR2(50) -- Tampoco estoy seguro del tipo.
+Es_Admin BOOLEAN NOT NULL,
+Sesion VARCHAR2(50)
 );
 
 CREATE TABLE HACER(
