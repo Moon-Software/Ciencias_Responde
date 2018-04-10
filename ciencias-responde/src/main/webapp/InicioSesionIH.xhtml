@@ -23,10 +23,10 @@ and open the template in the editor.
             <div id="name">
                 <h:graphicImage value = "resources/logo.svg" height="95px"/> 
                 <div id="social">
-                    <ui:decorate template="OpcionesHeaderSesionNoIniciadaIH.xhtml">
+                    <ui:decorate template="OpcionesHeaderSesionIniciadaIH.xhtml">
                         <ui:define name="wa_content" >
                             <ui:define name="menuBarBoton" >
-                                <ui:include src="OpcionesHeaderSesionNoIniciadaIH.xhtml" />
+                                <ui:include src="OpcionesHeaderSesionIniciadaIH.xhtml" />
                             </ui:define>
                         </ui:define>
                     </ui:decorate>
@@ -36,15 +36,22 @@ and open the template in the editor.
 
         <div id="wrapper">
             <h2> ¡Bienvenido/a a Ciencias Responde!</h2>
-            <div id="content">
-                <ui:decorate template="TemasIH.xhtml">
-                        <ui:define name="wat_content" >
-                            <ui:define name="dataModelTemas" >
-                                <ui:include src="TemasIH.xhtml" />
-                            </ui:define>
-                        </ui:define>
-                    </ui:decorate>
-            </div>
+
+
+<h:form>
+    <h:panelGrid id="grid" columns="3" cellpadding="5">
+        <p:outputLabel for="default" value="Usuario" />
+        <p:inputText id="default" required="true" />
+        <p:message for="default" />
+ 
+        <p:outputLabel for="txt" value="Constraseña" />
+        <p:inputText id="txt" required="true" />
+        <p:message for="txt" display="text" />
+    </h:panelGrid>
+ 
+    <p:commandButton id="submitButton" value="Submit" update="grid" />
+</h:form>
+
         </div>
         
         <div id="footer">
