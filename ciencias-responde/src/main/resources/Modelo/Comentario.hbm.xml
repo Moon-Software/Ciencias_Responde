@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 9/04/2018 09:09:38 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Modelo.Comentario" table="comentario" schema="public" optimistic-lock="version">
+        <id name="idCom" type="int">
+            <column name="id_com" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="pregunta" class="Modelo.Pregunta" fetch="select">
+            <column name="id_pregunta" />
+        </many-to-one>
+        <many-to-one name="usuario" class="Modelo.Usuario" fetch="select">
+            <column name="id_usuario" />
+        </many-to-one>
+        <property name="contenido" type="string">
+            <column name="contenido" length="400" not-null="true" />
+        </property>
+        <property name="votos" type="int">
+            <column name="votos" not-null="true" />
+        </property>
+        <property name="fecha" type="date">
+            <column name="fecha" length="13" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -8,6 +8,11 @@
   <name>ciencias-responde Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <dependencies>
+      <dependency>
+          <groupId>org.postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+          <version>9.3-1100-jdbc3</version>
+      </dependency>
     <dependency>
 		<groupId>junit</groupId>
 		<artifactId>junit</artifactId>
@@ -39,7 +44,21 @@
 		<artifactId>primefaces</artifactId>
 		<version>6.0</version>
 	</dependency>
-    
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>4.3.1.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.javax.persistence</groupId>
+      <artifactId>hibernate-jpa-2.1-api</artifactId>
+      <version>1.0.0.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>unknown.binary</groupId>
+      <artifactId>postgresql-9.4.1209</artifactId>
+      <version>SNAPSHOT</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>ciencias-responde</finalName>
@@ -67,4 +86,11 @@
 		
     </plugins>
   </build>
+  <repositories>
+    <repository>
+      <id>unknown-jars-temp-repo</id>
+      <name>A temporary repository created by NetBeans for libraries and jars it could not identify. Please replace the dependencies in this repository with correct ones and delete this repository.</name>
+      <url>file:${project.basedir}/lib</url>
+    </repository>
+  </repositories>
 </project>
