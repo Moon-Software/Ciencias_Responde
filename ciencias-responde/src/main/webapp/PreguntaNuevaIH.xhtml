@@ -9,7 +9,9 @@ and open the template in the editor.
 
 <html xmlns="http://www.w3c.org/1999/xhtml" 
       xmlns:h="http://xmlns.jcp.org/jsf/html" 
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
     
     <h:head>
         <title>Pregunta Nueva</title>
@@ -30,12 +32,14 @@ and open the template in the editor.
         <div id="wrapper">
             <h2>Nueva Pregunta</h2>
             <div id="content" style="margin:20px;">
-                <h:form>
-                Pegunta : <p:inputText  />
+                <h:form id="form">
+                    Pegunta : <p:inputText id="titulo" />
                 
-                <p:inputTextarea rows="10" cols="75" maxlength="2000" autoResize="false" />
+                <p:inputTextarea id="descripcion" rows="10" cols="75" maxlength="2000" autoResize="false" />
                 
-                   <p:commandButton value="Listo" ajax="false"/>
+                <h:commandButton  immediate="true" value = "Listo" action = "#{manejadorPregunta.agregarPregunta}" >
+                    <f:ajax />
+                </h:commandButton>
                 </h:form>
             </div>
         </div>

@@ -1,30 +1,30 @@
 -- Script para crear las tablas necesarias de esta iteración.
 
-CREATE TABLE USUARIO(
-ID_Usuario INTEGER PRIMARY KEY,
-Correo VARCHAR2(50) NOT NULL,
-Nombre VARCHAR2(50) NOT NULL,
-Foto BLOB,
-Contrasenia VARCHAR2(15) NOT NULL,
-F_Registro VARCHAR2(50) NOT NULL,
-Es_Admin BOOLEAN NOT NULL,
-Sesion VARCHAR2(50)
+CREATE TABLE usuario(
+id_usuario SERIAL PRIMARY KEY,
+correo VARCHAR(50) NOT NULL,
+nombre VARCHAR(50) NOT NULL,
+foto BYTEA,
+contrasenia VARCHAR(15) NOT NULL,
+f_registro VARCHAR(50) NOT NULL,
+es_admin BOOLEAN NOT NULL,
+sesion VARCHAR(50)
 );
 
-CREATE TABLE PREGUNTA(
-ID_Pregunta INTEGER PRIMARY KEY,
-ID_Usuario INTEGER CONSTRAINT Usuario_P REFERENCES Usuario(ID_Usuario),
-Descripcion VARCHAR2(50) NOT NULL,
-Titulo VARCHAR2(50) NOT NULL,
-Tema VARCHAR2(50) NOT NULL,
-Fecha DATE NOT NULL
+CREATE TABLE pregunta(
+id_pregunta SERIAL PRIMARY KEY,
+id_usuario INTEGER CONSTRAINT usuario_c REFERENCES usuario(id_usuario),
+descripcion VARCHAR(2000) NOT NULL,
+titulo VARCHAR(50) NOT NULL,
+tema VARCHAR(50) NOT NULL,
+fecha DATE NOT NULL
 );
 
-CREATE TABLE COMENTARIO(
-ID_Com INTEGER PRIMARY KEY,
-ID_Usuario INTEGER CONSTRAINT Usuario_C REFERENCES Usuario(ID_Usuario),
-ID_Pregunta INTEGER CONSTRAINT Pregunta_C REFERENCES Pregunta(ID_Pregunta),
-Contenido VARCHAR2(50) NOT NULL,
-VOTOS INTEGER NOT NULL,
-Fecha DATE NOT NULL
+CREATE TABLE comentario(
+id_comentario SERIAL PRIMARY KEY,
+id_usuario INTEGER CONSTRAINT usuario_c REFERENCES usuario(id_usuario),
+id_pregunta INTEGER CONSTRAINT pregunta_c REFERENCES pregunta(id_pregunta),
+contenido VARCHAR(1000) NOT NULL,
+votos INTEGER NOT NULL,
+fecha DATE NOT NULL
 );
