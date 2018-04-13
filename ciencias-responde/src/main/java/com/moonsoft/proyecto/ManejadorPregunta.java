@@ -31,11 +31,16 @@ public class ManejadorPregunta {
         pregunta = new Pregunta(0,descripcion, titulo, "ALGO", new Date());
         ConexionBD.conectarBD();
         ConexionBD.insertarBD(pregunta);
-        return "PantallaPreguntaIH?pid=" + pregunta.getIdPregunta();
+        return "PantallaPreguntaIH.xhtml?faces-redirect=true&pid="+pregunta.getIdPregunta();
     }
     
     public String veAPregunta(Integer id) {
-        return "PantallaPreguntaIH?pid=" + id.toString();
+        return "PantallaPreguntaIH?faces-redirect = true"+id;
+    }
+    
+    public String getId() {
+        if (pregunta == null) return "8";
+        return pregunta.getIdPregunta().toString();
     }
     
     public Pregunta getPregunta(String id) {
