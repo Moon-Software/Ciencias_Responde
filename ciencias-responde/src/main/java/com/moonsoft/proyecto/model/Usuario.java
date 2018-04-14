@@ -187,6 +187,11 @@ public class Usuario implements Serializable {
         }
         return true;
     }
+    
+    public void guardarBD() {
+        ConexionBD.conectarBD();
+        ConexionBD.insertarBD(this); 
+    }
 
     @Override
     public String toString() {

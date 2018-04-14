@@ -14,6 +14,7 @@ and open the template in the editor.
       xmlns:ui="http://java.sun.com/jsf/facelets" 
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     
+    <c:set var="preg" value="#{manejadorPregunta.getPregunta(param.pid)}"/> 
     <h:head>
         <title>Pregunta Nueva</title>
         <h:outputStylesheet  library="css"  name="estilo.css" /> 
@@ -31,17 +32,19 @@ and open the template in the editor.
         </div>
 
         <div id="wrapper">
-            <c:set var="preg" value="#{manejadorPregunta.getPregunta(param.pid)}" scope="request" /> 
             <h2><h:outputText value="#{preg.titulo}"/></h2>
             <div id="content" style="margin:20px;">
                 <h:outputText value="#{preg.descripcion}"/>
                 <f:view>
-                    
-                <h:form>
-                    <ui:repeat value="#{comentariosIH.comentarios}" var="com" >
-                        <h:outputText value="#{com.contenido}" />
-                    </ui:repeat>
-                </h:form>
+                    <h:form id="form">
+                        <!--h:outputText id="output" escape="false" value="#{comentariosIH.getComentarios(preg)}" /-->
+                        <p:inputTextarea id="contenido" rows="6" cols="50" maxlength="1000" autoResize="false" />
+                        <h:commandButton value = "OK" action = "#{manejadorComentario.agregarComentario(preg)}" >
+                            <p:ajax />
+                        </h:commandButton>
+
+                        <h:outputText id="output" escape="false" value="#{comentariosIH.getComentarios(preg)}" />
+                    </h:form>
                 </f:view>
             </div>
         </div>

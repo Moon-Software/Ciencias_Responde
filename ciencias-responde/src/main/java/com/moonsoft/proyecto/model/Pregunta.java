@@ -37,7 +37,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Pregunta.findByIdPregunta", query = "SELECT p FROM Pregunta p WHERE p.idPregunta = :idPregunta")
     , @NamedQuery(name = "Pregunta.findByDescripcion", query = "SELECT p FROM Pregunta p WHERE p.descripcion = :descripcion")
     , @NamedQuery(name = "Pregunta.findByTitulo", query = "SELECT p FROM Pregunta p WHERE p.titulo = :titulo")
-    , @NamedQuery(name = "Pregunta.findByTema", query = "SELECT p FROM Pregunta p WHERE p.tema = :tema")
     , @NamedQuery(name = "Pregunta.findByFecha", query = "SELECT p FROM Pregunta p WHERE p.fecha = :fecha")})
 public class Pregunta implements Serializable {
 
@@ -54,14 +53,14 @@ public class Pregunta implements Serializable {
     @Column(name = "titulo")
     private String titulo;
     @Basic(optional = false)
-    @Column(name = "tema")
-    private String tema;
-    @Basic(optional = false)
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
     @OneToMany(mappedBy = "idPregunta")
     private Collection<Comentario> comentarioCollection;
+    @JoinColumn(name = "tema", referencedColumnName = "nombre")
+    @ManyToOne
+    private Tema tema;
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     @ManyToOne
     private Usuario idUsuario;
@@ -73,11 +72,10 @@ public class Pregunta implements Serializable {
         this.idPregunta = idPregunta;
     }
 
-    public Pregunta(Integer idPregunta, String descripcion, String titulo, String tema, Date fecha) {
+    public Pregunta(Integer idPregunta, String descripcion, String titulo, Date fecha) {
         this.idPregunta = idPregunta;
         this.descripcion = descripcion;
         this.titulo = titulo;
-        this.tema = tema;
         this.fecha = fecha;
     }
 
@@ -105,14 +103,6 @@ public class Pregunta implements Serializable {
         this.titulo = titulo;
     }
 
-    public String getTema() {
-        return tema;
-    }
-
-    public void setTema(String tema) {
-        this.tema = tema;
-    }
-
     public Date getFecha() {
         return fecha;
     }
@@ -128,6 +118,14 @@ public class Pregunta implements Serializable {
 
     public void setComentarioCollection(Collection<Comentario> comentarioCollection) {
         this.comentarioCollection = comentarioCollection;
+    }
+
+    public Tema getTema() {
+        return tema;
+    }
+
+    public void setTema(Tema tema) {
+        this.tema = tema;
     }
 
     public Usuario getIdUsuario() {
@@ -158,6 +156,11 @@ public class Pregunta implements Serializable {
         return true;
     }
 
+    public void guardarBD() {
+        ConexionBD.conectarBD();
+        ConexionBD.insertarBD(this); 
+    }
+    
     @Override
     public String toString() {
         return "com.moonsoft.proyecto.model.Pregunta[ idPregunta=" + idPregunta + " ]";
