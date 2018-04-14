@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+    <nav class="navbar navbar-expand-md navbar-light fixed-top" style="background-color: #689f38;">
+        <h:graphicImage value = "./resources/logo.svg"  />
+
+        <div class="collapse navbar-collapse">
+            <div class="navbar-nav ml-auto">
+                <c:when test="#{userBean.logged}">
+                    <div class ="my-2 my-lg-0">
+                        <h:form id="perfil">
+                            <h:commandButton action="#{loginController.logout()}"
+                                             value="Perfil"
+                                             class="btn-primary my-2 my-sm-0"/>
+                        </h:form>
+                    </div>
+                    <div class ="my-2 my-lg-0">
+                        <h:form id="exit">
+                            <h:commandButton action="#{loginController.logout()}"
+                                             value="Cerrar Sesión"
+                                             class="btn-primary my-2 my-sm-0"/>
+                        </h:form>
+                    </div>
+                </c:when>
+
+                <c:otherwise>
+                    <h:form id="myForm" class="form-inline my-2 my-lg-0">
+                        <p:button class="btn-primary my-2 my-sm-0" outcome="InicioSesionIH" value="Iniciar Sesion"></p:button>
+                        <p:button class="btn-primary my-2 my-sm-0" outcome="#" value="Registrarse"></p:button>
+                    </h:form>
+                </c:otherwise>
+                </c:choose>
+            </div>
+        </div>
+
+    </nav>
+</ui:composition>
