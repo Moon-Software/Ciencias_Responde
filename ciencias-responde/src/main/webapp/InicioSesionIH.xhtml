@@ -1,38 +1,35 @@
 <ui:composition
     template="/WEB-INF/facelets/templates/layout.xhtml"
     xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:p="http://primefaces.org/ui"
-    xmlns:ui="http://java.sun.com/jsf/facelets">
+    xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
     <ui:define name="content">
         <div id="wrapper">
             <h2> ¡Bienvenido/a a Ciencias Responde!</h2>
+            <h:form id="myfForm" class="form-inline my-2 my-lg-0">
+                <h:inputText value="#{loginController.usuario.usuario}"
+                             required="true" id="Username"
+                             size="15" class="form-control mr-sm-2"
+                             a:placeholder="Correo Electrónico"/>
 
+                <h:inputSecret value="#{loginController.usuario.contraseña}"
+                               required="true" id="Password"
+                               class="form-control mr-sm-2"
+                               a:placeholder="Contraseña"/>
 
-            <table>
-                <tr>
-                    <td>Nombre de usuario</td>
-                    <td><p:inputText value="#{registerController.user.usuario}" required="true" id="Username" size="10"/></td>
-                </tr>
-                <tr>
-                    <td>Contraseña</td>
-                    <td><p:password value="#{registerController.user.contraseña}" required="true" feedback="true" id="Password"/></td>
-                </tr>
-                <tr>
-                    <td>Confirmar Contraseña</td>
-                    <td><p:password value="#{registerController.user. confirmacionContraseña}" required="true" feedback="true" id="ConfirmPassword"/></td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="center">
-                        <p:commandButton action="#{registerController.addUser}" value="Registrar"/>
+                <h:commandButton action="#{loginController.canLogin()}"
+                                 value="Inicia Sesión"
+                                 class="btn btn-outline-success my-2 my-sm-0"/>
 
-                    </td>
-                </tr>
-            </table>
+            </h:form>
 
         </div>
 
     </ui:define>
-
-
+    
+   
 </ui:composition>

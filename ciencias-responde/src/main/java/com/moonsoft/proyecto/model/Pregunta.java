@@ -62,10 +62,11 @@ public class Pregunta implements Serializable {
     private Date fecha;
     @OneToMany(mappedBy = "idPregunta")
     private Collection<Comentario> comentarioCollection;
+    /* AQUÍ DIEGO
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     @ManyToOne
     private Usuario idUsuario;
-
+*/
     public Pregunta() {
     }
 
@@ -129,7 +130,7 @@ public class Pregunta implements Serializable {
     public void setComentarioCollection(Collection<Comentario> comentarioCollection) {
         this.comentarioCollection = comentarioCollection;
     }
-
+/* Aqui igual
     public Usuario getIdUsuario() {
         return idUsuario;
     }
@@ -137,7 +138,7 @@ public class Pregunta implements Serializable {
     public void setIdUsuario(Usuario idUsuario) {
         this.idUsuario = idUsuario;
     }
-
+*/
     @Override
     public int hashCode() {
         int hash = 0;

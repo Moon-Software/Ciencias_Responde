@@ -5,37 +5,37 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
-    <nav class="navbar navbar-expand-md navbar-light fixed-top" style="background-color: #689f38;">
-        <h:graphicImage value = "./resources/logo.svg"  />
+    <nav class="navbar navbar-expand-md navbar-light" style="background-color: #689f38;">
+        <h:graphicImage value = "./logo.svg"  />
 
-        <div class="collapse navbar-collapse">
             <div class="navbar-nav ml-auto">
+                <c:choose>
+
                 <c:when test="#{userBean.logged}">
                     <div class ="my-2 my-lg-0">
                         <h:form id="perfil">
-                            <h:commandButton action="#{loginController.logout()}"
-                                             value="Perfil"
-                                             class="btn-primary my-2 my-sm-0"/>
+                            <h:commandButton
+                                             value="Perfil"/>
                         </h:form>
                     </div>
                     <div class ="my-2 my-lg-0">
                         <h:form id="exit">
                             <h:commandButton action="#{loginController.logout()}"
-                                             value="Cerrar Sesión"
-                                             class="btn-primary my-2 my-sm-0"/>
+                                             value="Cerrar Sesión"/>
                         </h:form>
                     </div>
                 </c:when>
 
                 <c:otherwise>
                     <h:form id="myForm" class="form-inline my-2 my-lg-0">
-                        <p:button class="btn-primary my-2 my-sm-0" outcome="InicioSesionIH" value="Iniciar Sesion"></p:button>
-                        <p:button class="btn-primary my-2 my-sm-0" outcome="#" value="Registrarse"></p:button>
+                        
+                        <p:button outcome="InicioSesionIH" value="Iniciar Sesion"></p:button>
+                        <p:button value="Registrarse"></p:button>
                     </h:form>
                 </c:otherwise>
                 </c:choose>
             </div>
-        </div>
+        
 
     </nav>
 </ui:composition>
