@@ -34,12 +34,12 @@ and open the template in the editor.
             <div id="content" style="margin:20px;">
                 <h:form id="form">
                     Pegunta : <p:inputText id="titulo" />
-                
+                Tema: <h:selectOneMenu id="tema">
+                    <f:selectItems value="#{manejadorPregunta.temas}" />
+                </h:selectOneMenu>
                 <p:inputTextarea id="descripcion" rows="10" cols="75" maxlength="2000" autoResize="false" />
                 
-                <h:commandButton  immediate="true" value = "Listo" action = "#{manejadorPregunta.agregarPregunta}" >
-                    <f:ajax />
-                </h:commandButton>
+                <h:commandButton  immediate="true" value = "Listo" action = "#{manejadorPregunta.agregarPregunta}" />
                 </h:form>
             </div>
         </div>

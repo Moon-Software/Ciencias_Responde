@@ -5,8 +5,10 @@
     <class>com.moonsoft.proyecto.model.Comentario</class>
     <class>com.moonsoft.proyecto.model.Pregunta</class>
     <class>com.moonsoft.proyecto.model.Usuario</class>
+
     <class>com.moonsoft.proyecto.model.Login</class>
 
+    <class>com.moonsoft.proyecto.model.Tema</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/ejemplo"/>

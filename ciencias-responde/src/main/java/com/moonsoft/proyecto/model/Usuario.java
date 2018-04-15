@@ -30,4 +30,29 @@ public class Usuario {
         this.confirmacionContraseña = confirmacionContraseña;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idUsuario != null ? idUsuario.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Usuario)) {
+            return false;
+        }
+        Usuario other = (Usuario) object;
+        if ((this.idUsuario == null && other.idUsuario != null) || (this.idUsuario != null && !this.idUsuario.equals(other.idUsuario))) {
+            return false;
+        }
+        return true;
+    }
+    
+    public void guardarBD() {
+        ConexionBD.conectarBD();
+        ConexionBD.insertarBD(this); 
+    }
+
 }

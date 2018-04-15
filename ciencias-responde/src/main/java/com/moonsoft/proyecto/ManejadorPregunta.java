@@ -7,7 +7,9 @@ package com.moonsoft.proyecto;
 
 import com.moonsoft.proyecto.model.ConexionBD;
 import com.moonsoft.proyecto.model.Pregunta;
+import com.moonsoft.proyecto.model.Tema;
 import java.util.Date;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
@@ -23,19 +25,43 @@ import javax.persistence.Query;
 public class ManejadorPregunta {
 
     private Pregunta pregunta;
+    private List<Tema> temas;
+    
+    
+    public List<Tema> getTemas() {
+        if (temas == null) {
+            ConexionBD.conectarBD();
+            Query q = ConexionBD.consultarBD("Tema.findAll");
+            temas = (List<Tema>) q.getResultList();
+        }
+        return temas;
+    }
     
     public String agregarPregunta() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        //Usuario usr =...
         String titulo = ec.getRequestParameterMap().get("form:titulo");
         String descripcion = ec.getRequestParameterMap().get("form:descripcion");
-        pregunta = new Pregunta(0,descripcion, titulo, "ALGO", new Date());
-        ConexionBD.conectarBD();
-        ConexionBD.insertarBD(pregunta);
-        return "PantallaPreguntaIH?pid=" + pregunta.getIdPregunta();
+        String tNom = ec.getRequestParameterMap().get("form:tema");
+
+        //Agregamos pregunta, junto con su tema a la base de datos, 
+        pregunta = new Pregunta(0,descripcion, titulo, new Date());
+        for (Tema t : temas) 
+            if (t.getNombre().equals(tNom)) {
+                pregunta.setTema(t);
+            }
+        //pregunta.setUsuario(usr);
+        pregunta.guardarBD();
+        return "PantallaPreguntaIH.xhtml?faces-redirect=true&pid="+pregunta.getIdPregunta();
     }
     
     public String veAPregunta(Integer id) {
-        return "PantallaPreguntaIH?pid=" + id.toString();
+        return "PantallaPreguntaIH.xhtml?faces-redirect=true&pid="+id;
+    }
+    
+    public String getId() {
+        if (pregunta == null) return "8";
+        return pregunta.getIdPregunta().toString();
     }
     
     public Pregunta getPregunta(String id) {

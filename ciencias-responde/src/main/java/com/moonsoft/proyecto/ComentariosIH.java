@@ -6,11 +6,10 @@
 package com.moonsoft.proyecto;
 
 import com.moonsoft.proyecto.model.Comentario;
-import java.util.ArrayList;
+import com.moonsoft.proyecto.model.Pregunta;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.annotation.PostConstruct;
 
 
 /**
@@ -21,16 +20,26 @@ import javax.annotation.PostConstruct;
 @ViewScoped
 public class ComentariosIH {
 
-    private List<Comentario> comentarios;
-    private ManejadorComentario mc;
+    private ManejadorComentario mc = new ManejadorComentario();
     
-    @PostConstruct
-    public void init() {    //deberan estar ordenados por fecha
-        mc = new ManejadorComentario();
-        
+    public String comentarioNuevo(Pregunta p) {
+        //Usuario u = getusuario.
+        //if (u == null)  No esta conectado
+        //  return ""
+        //else
+        return "";  //Agregar comentario nuevo.
     }
     
-    public List<Comentario> getComentarios() {
-        return comentarios;
+    public String getComentarios(Pregunta p) {
+        List<Comentario> comentarios = mc.getComentarios(p);
+        if (comentarios.isEmpty()) {
+            return "No hay comentarios para esta pregunta.";
+        }
+        //Repetir muchas veces.
+        return  "<ui:repeat value=\"#{manejadorComentario.comentarios}\" var=\"com\" >\n" +
+                    "<div id=\"comentario\">\n" +
+                        "<h:outputText value=\"#{com.contenido}\" />\n" +
+                    "</div>\n" +
+                "</ui:repeat>";
     }
 }

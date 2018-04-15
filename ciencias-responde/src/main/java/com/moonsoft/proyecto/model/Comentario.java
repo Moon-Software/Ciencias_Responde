@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Comentario.findAll", query = "SELECT c FROM Comentario c")
     , @NamedQuery(name = "Comentario.findByIdComentario", query = "SELECT c FROM Comentario c WHERE c.idComentario = :idComentario")
     , @NamedQuery(name = "Comentario.findByContenido", query = "SELECT c FROM Comentario c WHERE c.contenido = :contenido")
+    , @NamedQuery(name = "Comentario.findByIdPregunta", query = "SELECT c FROM Comentario c WHERE c.idPregunta = :idPregunta ORDER BY c.fecha DESC")
     , @NamedQuery(name = "Comentario.findByVotos", query = "SELECT c FROM Comentario c WHERE c.votos = :votos")
     , @NamedQuery(name = "Comentario.findByFecha", query = "SELECT c FROM Comentario c WHERE c.fecha = :fecha")})
 public class Comentario implements Serializable {
@@ -144,6 +145,11 @@ public class Comentario implements Serializable {
         return true;
     }
 
+    public void guardarBD() {
+        ConexionBD.conectarBD();
+        ConexionBD.insertarBD(this); 
+    }
+    
     @Override
     public String toString() {
         return "com.moonsoft.proyecto.model.Comentario[ idComentario=" + idComentario + " ]";
