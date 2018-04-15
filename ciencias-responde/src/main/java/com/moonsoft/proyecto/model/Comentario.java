@@ -57,9 +57,11 @@ public class Comentario implements Serializable {
     @JoinColumn(name = "id_pregunta", referencedColumnName = "id_pregunta")
     @ManyToOne
     private Pregunta idPregunta;
+    /* AQUÍ IGUAL
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
     @ManyToOne
     private Usuario idUsuario;
+*/
 
     public Comentario() {
     }
@@ -114,7 +116,7 @@ public class Comentario implements Serializable {
     public void setIdPregunta(Pregunta idPregunta) {
         this.idPregunta = idPregunta;
     }
-
+/* AQUI IGUAL
     public Usuario getIdUsuario() {
         return idUsuario;
     }
@@ -122,7 +124,7 @@ public class Comentario implements Serializable {
     public void setIdUsuario(Usuario idUsuario) {
         this.idUsuario = idUsuario;
     }
-
+*/
     @Override
     public int hashCode() {
         int hash = 0;

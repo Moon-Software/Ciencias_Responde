@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3c.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>
+        <h:outputStylesheet  library="css"  name="estilo.css" /> 
+    </h:head>
+
+    <h:body>
+        <ui:composition>
+            <h:form>
+                <p:accordionPanel value="1" var="temas">
+                    <p:tab title="Nombre de tema 1">
+                        <h:panelGrid columns="2" cellpadding="5">
+                                             
+                            <h:outputText value="DESCRIPCIÓN: " style="font-weight: bold" />
+                            <h:outputText value="Aquí va una breve descripción al tema." />
+                                <a href="#PreguntaPorTema"> Ir a preguntas asociadas al tema.</a>
+                                
+                        </h:panelGrid>
+                    </p:tab>
+                    
+                </p:accordionPanel>
+                
+                <p:accordionPanel value="2" var="temas">
+                    <p:tab title="Nombre de tema 2">
+                        <h:panelGrid columns="2" cellpadding="5">
+                                             
+                            <h:outputText value="DESCRIPCIÓN: " style="font-weight: bold" />
+                            <h:outputText value="Aquí va una breve descripción al tema." />
+                                <a href="#PreguntaPorTema"> Ir a preguntas asociadas al tema.</a>
+                                
+                        </h:panelGrid>
+                    </p:tab>
+                    
+                </p:accordionPanel> 
+            </h:form>
+        </ui:composition>
+    </h:body>
+</html>

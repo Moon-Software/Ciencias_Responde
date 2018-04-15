@@ -9,13 +9,19 @@ and open the template in the editor.
 
 <html xmlns="http://www.w3c.org/1999/xhtml" 
       xmlns:h="http://xmlns.jcp.org/jsf/html" 
-      xmlns:p="http://primefaces.org/ui">
-    
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
     <h:head>
         <h:outputStylesheet  library="css"  name="estilo.css" /> 
     </h:head>
-    
+
     <h:body>
-        
+        <ui:composition>
+            <p:dialog header="DialogoPreguntaBorrada" widgetVar="dlg2" modal="true" height="100">
+                <h:outputText value="La pregunta ha sido borrada satisfactoriamente." />
+            </p:dialog> 
+
+        </ui:composition>
     </h:body>
 </html>
