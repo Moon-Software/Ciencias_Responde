@@ -74,4 +74,17 @@ public class ManejadorPregunta {
         return pregunta;
     }
     
+    public List<Pregunta> getPreguntas(String tema) {
+        List<Pregunta> preguntas;
+        ConexionBD.conectarBD();
+        Query q1 = ConexionBD.consultarBD("Pregunta.findByTema");
+        Query q2 = ConexionBD.consultarBD("Tema.findByNombre");
+        q2.setParameter("nombre", tema);
+        Tema t = (Tema) q2.getSingleResult();
+        q1.setParameter("tema", t);
+        preguntas = (List<Pregunta>) q1.getResultList();
+        
+        return preguntas;
+    }
+    
 }
