@@ -6,6 +6,9 @@
 package com.moonsoft.proyecto.model;
 
 import java.io.Serializable;
+import java.util.Date;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +19,8 @@ import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -63,10 +68,9 @@ public class Usuario implements Serializable {
     @Column(name = "contrasenia")
     private String contrasenia;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
+    @Temporal(TemporalType.DATE)
     @Column(name = "f_registro")
-    private String fRegistro;
+    private Date fRegistro;
     @Basic(optional = false)
     @NotNull
     @Column(name = "es_admin")
@@ -82,7 +86,7 @@ public class Usuario implements Serializable {
         this.idUsuario = idUsuario;
     }
 
-    public Usuario(Integer idUsuario, String correo, String nombre, String contrasenia, String fRegistro, boolean esAdmin) {
+    public Usuario(Integer idUsuario, String correo, String nombre, String contrasenia, Date fRegistro, boolean esAdmin) {
         this.idUsuario = idUsuario;
         this.correo = correo;
         this.nombre = nombre;
@@ -131,11 +135,11 @@ public class Usuario implements Serializable {
         this.contrasenia = contrasenia;
     }
 
-    public String getFRegistro() {
+    public Date getFRegistro() {
         return fRegistro;
     }
 
-    public void setFRegistro(String fRegistro) {
+    public void setFRegistro(Date fRegistro) {
         this.fRegistro = fRegistro;
     }
 
@@ -178,6 +182,11 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "com.moonsoft.proyecto.model.Usuario[ idUsuario=" + idUsuario + " ]";
+    }
+    
+    public void guardarBD() {
+        ConexionBD.conectarBD();
+        ConexionBD.insertarBD(this); 
     }
     
 }

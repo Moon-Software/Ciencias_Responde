@@ -8,20 +8,55 @@ package com.moonsoft.proyecto.model;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import org.primefaces.push.annotation.Singleton;
 
 /**
  *
  * @author gouen
  */
+@Singleton
 public class ConexionBD {
+
     @PersistenceContext
-    private EntityManager em;
+    private static EntityManager em;
     
-    public void conectarBD(){
-        em = Persistence.createEntityManagerFactory("com.moonsoft.proyecto_ciencias-responde_war_0.0.1PU").createEntityManager();
+    private ConexionBD () {}
+    
+    public static EntityManager conectarBD(){
+        if (em == null) {
+            em = Persistence.createEntityManagerFactory("com.moonsoft.proyecto_ciencias-responde_war_0.0.1PU").createEntityManager();
+        }
+        return em;
     }
     
-    public void insertarBD(Object o){
+    public static void desconectarBD(){
+        if (em != null) {
+                em.close();
+        }
+    }
+    
+    public static void insertarBD(Object o){
         em.getTransaction().begin();
+        em.persist(o);
+        em.getTransaction().commit();
     }
+    
+    public static void actualizarBD(){
+    
+    }
+    
+    public static void borrarBD(){
+    
+    }
+    
+    public static Query consultarBD(String q){
+        if (em == null) return null;
+        return em.createNamedQuery(q);
+    }
+    
+    public static void seleccionarTodosBD(){
+    
+    }
+
 }
