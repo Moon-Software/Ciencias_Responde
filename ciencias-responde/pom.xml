@@ -8,12 +8,13 @@
   <name>ciencias-responde Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <dependencies>
+      
     <dependency>
 		<groupId>junit</groupId>
 		<artifactId>junit</artifactId>
 		<version>3.8.1</version>
 		<scope>test</scope>
-	</dependency>
+    </dependency>
     
     <!-- Agrega mas soporte a Java Server Faces -->
 	<dependency>
@@ -43,12 +44,13 @@
 		<groupId>org.primefaces</groupId>
 		<artifactId>primefaces</artifactId>
 		<version>6.0</version>
+	    <type>jar</type>
 	</dependency>
         
         <dependency>
 		<groupId>org.postgresql</groupId>
 		<artifactId>postgresql</artifactId>
-		<version>9.4.</version>
+		<version>9.4-1200-jdbc41</version>
 	</dependency>
     <dependency>
       <groupId>org.eclipse.persistence</groupId>
@@ -61,6 +63,12 @@
       <version>2.5.2</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+        <groupId>com.sun.mail</groupId>
+        <artifactId>javax.mail</artifactId>
+        <version>1.6.1</version>
+    </dependency>
+        
   </dependencies>
   <build>
     <finalName>ciencias-responde</finalName>
@@ -85,6 +93,12 @@
 				<path>/ciencias-responde</path>
 			</configuration>
 		</plugin>
+                
+                <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>2.6</version>
+                </plugin>
 		
     </plugins>
   </build>

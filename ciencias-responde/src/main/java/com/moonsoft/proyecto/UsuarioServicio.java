@@ -7,11 +7,12 @@ package com.moonsoft.proyecto;
 
 import com.moonsoft.proyecto.model.Usuario;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.validation.constraints.Pattern;
 
 /**
  *
@@ -20,11 +21,10 @@ import javax.validation.constraints.Pattern;
 @ManagedBean(name = "usuarioServicio" )
 @ViewScoped
 public class UsuarioServicio {
-   @Pattern(regexp="\"^[_A-Za-z0-9-\\\\+]+(\\\\.[_A-Za-z0-9-]+)*") 
    private String correo;
    private String nombre;
    private String contrasenia;
-   
+    
    public String getCorreo() {
         return correo;
     }
@@ -50,11 +50,23 @@ public class UsuarioServicio {
     }
 
    public String agregarUsuario(){
-       System.out.println(nombre);
-       System.out.println(correo);
-       System.out.println(contrasenia);
-       Usuario usr = new Usuario(0,correo,nombre,contrasenia,new Date(),false);
-       usr.guardarBD();
-       return "registroExitosoIH.xhtml?faces-redirect=true";
+        String respuesta = "";
+        Pattern correoVal = Pattern
+                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "ciencias\\.unam\\.mx$");
+        Matcher mather = correoVal.matcher(correo);
+        if(mather.find() == true){
+            System.out.println(nombre);
+            System.out.println(correo);
+            System.out.println(contrasenia);
+            Usuario usr = new Usuario(0,correo,nombre,null,contrasenia,new Date(),false);
+            Email em = new Email(correo);
+            em.sendEmail();
+            usr.guardarBD();
+            respuesta = "registroConfirmacionIH.xhtml?faces-redirect=true";
+        }else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "El correo debe tener dominio @ciencias"));
+        }
+        return respuesta;   
     }
 }
