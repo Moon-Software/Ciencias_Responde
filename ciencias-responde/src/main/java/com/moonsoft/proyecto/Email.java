@@ -19,10 +19,14 @@ public class Email {
     UsuarioServicio usr = new UsuarioServicio();
     final String fromEmail = "cienciasrespondeing@gmail.com"; //requires valid gmail id
     final String password = "ciencias123"; // correct password for gmail id
-    final String toEmail; 
+    final String toEmail;
+    private String nombre;
+    private String contrasenia;
     
-    public Email(String correo){
+    public Email(String correo, String nombre, String contrasenia){
         this.toEmail = correo;
+        this.nombre = nombre;
+        this.contrasenia = contrasenia;
     }
     
     public void sendEmail(){
@@ -45,7 +49,9 @@ public class Email {
         Session session = Session.getDefaultInstance(props, auth);
         System.out.println("Session created");
             
-        EmailUtil.sendEmail(session, toEmail,"Confirma tú correo", "Da click en link para terminar el registro http://localhost:8084/ciencias-responde/registroExitosoIH.xhtml");
+        EmailUtil.sendEmail(session, toEmail,"Creacion de cuenta", "Gracias por registrarte en CienciasResponde\n"
+                                                                    +"Tu nombre es: "+nombre+"\n"
+                                                                    +"Tu contraseña es: "+contrasenia);
 
     }
     

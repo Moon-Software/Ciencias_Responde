@@ -37,9 +37,14 @@ public class ConexionBD {
     }
     
     public static void insertarBD(Object o){
-        em.getTransaction().begin();
-        em.persist(o);
-        em.getTransaction().commit();
+        try{
+            em.getTransaction().begin();
+            em.persist(o);
+            em.getTransaction().commit();
+            System.out.println("El usuario se agrego correctamente a la base");
+        }catch(Exception e){
+            System.out.println(e);
+        }
     }
     
     public static void actualizarBD(){

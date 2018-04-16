@@ -7,8 +7,6 @@ package com.moonsoft.proyecto.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -86,13 +84,14 @@ public class Usuario implements Serializable {
         this.idUsuario = idUsuario;
     }
 
-    public Usuario(Integer idUsuario, String correo, String nombre, byte[] fotos,String contrasenia,Date fRegistro, boolean esAdmin) {
+    public Usuario(Integer idUsuario, String correo, String nombre, byte[] fotos,String contrasenia,Date fRegistro, boolean esAdmin,String sesion) {
         this.idUsuario = idUsuario;
         this.correo = correo;
         this.nombre = nombre;
         this.contrasenia = contrasenia;
         this.fRegistro = fRegistro;
         this.esAdmin = esAdmin;
+        this.sesion = sesion;
     }
 
     public Integer getIdUsuario() {
@@ -185,8 +184,14 @@ public class Usuario implements Serializable {
     }
     
     public void guardarBD() {
-        ConexionBD.conectarBD();
-        ConexionBD.insertarBD(this); 
+        try{
+            ConexionBD.conectarBD();
+            ConexionBD.insertarBD(this); 
+            System.out.println("El usuario se agrego correctamente a la base");
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        
     }
     
 }

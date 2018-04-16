@@ -45,8 +45,7 @@ and open the template in the editor.
                                      label="Confirmacion de Password"/>
                          <p:message for="confPassword" />
                      </h:panelGrid>
-                     <p:outputLabel value="Foto de perfil:" />
-                     <p:fileUpload cancelLabel="#{msg['cancel']}" mode="simple" skinSimple="true" />
+                     <p:fileUpload value="#{usuarioServicio.file}"  mode="simple" skinSimple="true" allowTypes="(\.|\/)(gif|jpe?g|png)$/" sizeLimit="10000000"/>
                      <p:spacer height="20"/>
                      <p:separator/>
                      <p:spacer width="10"></p:spacer>
