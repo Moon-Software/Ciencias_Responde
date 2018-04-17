@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3c.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>
+        <h:outputStylesheet  library="css"  name="estilo.css" /> 
+    </h:head>
+
+    <h:body>
+        <ui:composition>
+            <p:dialog header="DialogoError" widgetVar="dlg2" modal="true" height="100">
+                <h:outputText value="¡ERROR DE CONEXIÓN!\nAsegúrese de estar conectado, y si lo está,\ninténtelo más tarde." />
+            </p:dialog> 
+
+        </ui:composition>
+    </h:body>
+</html>

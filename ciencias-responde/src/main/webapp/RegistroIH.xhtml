@@ -1,0 +1,62 @@
+<!--
+
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/mobile">
+    <h:head>
+        <title>Registro</title>
+        <h:outputStylesheet library="css" name="estilo.css"/>
+    </h:head>
+    <h:body>
+        <div id="header">
+            <div id="name">
+                <h:outputLink value="PantallaPrincipalIH.xhtml">
+                <h:graphicImage value = "resources/logo.svg" height="95px"/> 
+                </h:outputLink>
+            </div>
+        </div>
+        <div id="wrapper">
+            <h2> Registro </h2>
+             <div id="content"> 
+                 <h:form enctype="multipart/form-data" id="form">
+                     <p:messages id="messages" showDetail="true" closable="true" autoUpdate="true" ></p:messages>
+                     <h:panelGrid id="grid" columns="3" cellpadding="5">
+                         <p:outputLabel for="nombre" value="Nombre:" />
+                         <p:inputText id="nombre" size="50" value="#{usuarioServicio.nombre}" required="true" requiredMessage="El nombre es obligatorio."/>
+                         <p:message for="nombre" />
+                       
+                         <p:outputLabel for="correo" value="Correo:" />
+                         <p:inputText id="correo" size="50" value="#{usuarioServicio.correo}" required="true" requiredMessage="El correo es obligatorio." label="correo"/>
+                         <p:message for="correo" />
+                                                                          
+                         <p:outputLabel for="password" value="Password:" />
+                         <p:password id="password" size="50" value="#{usuarioServicio.contrasenia}" required="true" label="Password"
+                                     match="confPassword" feedback="true" promptLabel="Nivel de Seguridad"
+                                     weakLabel="Debil" goodLabel="Media" strongLabel="Fuerte" requiredMessage="El password es obligatorio."/>
+                         <p:message for="password" />
+                                                  
+                         <p:outputLabel for="confPassword" value="Confirmacion de Password:" />
+                         <p:password id="confPassword" size="50" required="true" requiredMessage="Confirma el password." 
+                                     label="Confirmacion de Password"/>
+                         <p:message for="confPassword" />
+                     </h:panelGrid>
+                     <p:fileUpload value="#{usuarioServicio.file}"  mode="simple" skinSimple="true" allowTypes="(\.|\/)(gif|jpe?g|png)$/" sizeLimit="10000000"/>
+                     <p:spacer height="20"/>
+                     <p:separator/>
+                     <p:spacer width="10"></p:spacer>
+                     <h:panelGrid>
+                         <p:commandButton value="Registrar" icon="ui-icon-disk" update="grid" action="#{usuarioServicio.agregarUsuario}"  validateClient="true"/>
+                     </h:panelGrid>
+                 </h:form>
+             </div>
+        </div>
+        
+        <div id="footer"> MoonSoftware - 2018 </div>
+    </h:body>
+</html>

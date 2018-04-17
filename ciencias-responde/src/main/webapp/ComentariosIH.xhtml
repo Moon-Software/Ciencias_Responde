@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3c.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <h:outputStylesheet  library="css"  name="estilo.css" /> 
+    </h:head>
+
+    <h:body id="comentarioBody">
+        <c:choose>
+            <c:when test="#{sesion.estaConectado()}">
+                <div align="center">
+                <p:inputTextarea id="contenido" rows="6" cols="50" maxlength="1000" autoResize="false" style="resize: none" />
+                <p:commandButton id="agrCom" value = "OK" action = "#{manejadorComentario.agregarComentario(preg)}" />
+                </div>
+            </c:when>
+        </c:choose>
+        
+        <c:choose>
+             <c:when test="#{manejadorComentario.hayComentarios(preg)}">
+                 <h:form id="form" >
+                    <ui:repeat id="comentariosDis" value="#{manejadorComentario.getComentarios(preg)}" var="com"  >
+                        <div  id="comentario">
+                        <h:panelGrid style="width:100%" id="grid" columns="2"  bgcolor="#bcaaa4" cellpadding="2">
+                            <h:panelGroup id="info" style="width:20%">
+                                <div align="center">
+                                <h:graphicImage value = "resources/icon.jpg" height="70px"/> 
+                                <br/>
+                                <h:outputText style="font-weight: bold; text-align: center;" value="#{com.idUsuario.nombre}" />
+                                </div>
+                            </h:panelGroup>
+                            <h:outputText value="#{com.contenido}" />
+                        </h:panelGrid>
+                        </div>
+                    </ui:repeat>
+                </h:form>
+            </c:when>
+
+            <c:otherwise>
+                <div class ="my-2 my-lg-0">
+                    <h:form id="comentariosVac">
+                        <h:outputText value="No hay comentarios para esta pregunta."/>
+                    </h:form>
+                </div>
+            </c:otherwise>
+        </c:choose>
+    </h:body>
+</html>

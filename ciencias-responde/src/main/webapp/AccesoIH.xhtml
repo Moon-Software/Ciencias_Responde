@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3c.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>
+        <h:outputStylesheet  library="css"  name="estilo.css" /> 
+    </h:head>
+
+    <h:body>
+         <c:choose>
+
+                <c:when test="#{sesion.estaConectado()}">
+                    <div class ="my-2 my-lg-0">
+                        <h:form id="perfil">
+                            <h:commandButton value="Perfil"/>
+                        </h:form>
+                    </div>
+                    <div class ="my-2 my-lg-0">
+                        <h:form id="exit">
+                            <h:commandButton action="#{sesion.cerrarSesion()}" value="Cerrar Sesión"/>
+                        </h:form>
+                    </div>
+                </c:when>
+
+                <c:otherwise>
+                    <h:form id="myForm" class="form-inline my-2 my-lg-0">
+                        <h:button value="Iniciar Sesion" outcome="InicioSesionIH.xhtml" />
+                        <p:spacer width="10"></p:spacer>
+                        <h:button value="Registrarse" outcome="RegistroIH.xthml" />
+                    </h:form>
+                </c:otherwise>
+        </c:choose>
+    </h:body>
+</html>
