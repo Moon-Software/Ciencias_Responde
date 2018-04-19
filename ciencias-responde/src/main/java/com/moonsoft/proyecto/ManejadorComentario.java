@@ -15,7 +15,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import static javax.faces.context.FacesContext.getCurrentInstance;
 import javax.persistence.Query;
 
 
@@ -31,18 +30,19 @@ public class ManejadorComentario {
     private List<Comentario> comentarios;
     
     
-    public void agregarComentario(Pregunta p) {
+    public boolean agregarComentario(Pregunta p) {
+        System.out.println("KOOOOKOCKCO");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         Usuario u = (Usuario) ec.getSessionMap().get("usuario");
-        String contenido = ec.getRequestParameterMap().get("form:contenido");
+        String contenido = ec.getRequestParameterMap().get("areacom:contenido");
 
         //Agregamos pregunta, junto con su tema a la base de datos, 
         Comentario c = new Comentario(0, contenido, 0, new Date());
-        System.out.println(c.getFecha());
         c.setIdPregunta(p);
         c.setIdUsuario(u);
         //pregunta.setUsuario(usr);
         c.guardarBD();
+        return false;
     }
     
     /**

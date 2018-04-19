@@ -15,6 +15,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.Lob;
+import javax.persistence.Query;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -71,13 +72,16 @@ public class UsuarioServicio {
         Matcher mather = correoVal.matcher(correo);
         if(contrasenia.length() >= 8){
             if(mather.find() == true){
-                System.out.println(nombre);
-                System.out.println(correo);
-                System.out.println(contrasenia);
+                ConexionBD.conectarBD();
+                Query q = ConexionBD.consultarBD("Usuario.findByCorreo");
+                q.setParameter("correo", correo);
+                if (!q.getResultList().isEmpty()) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "El usuario ya existe."));
+                    return "";
+                }
                 Usuario usr = new Usuario(0, correo, nombre, contrasenia, new Date(), false);
                 Email em = new Email(correo,nombre,contrasenia);
                 em.sendEmail();
-                ConexionBD.conectarBD();
                 usr.guardarBD();
                 respuesta = "RegistroExitosoIH.xhtml?faces-redirect=true";
             }else{

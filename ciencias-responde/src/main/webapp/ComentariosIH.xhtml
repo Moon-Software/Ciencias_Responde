@@ -16,20 +16,17 @@ and open the template in the editor.
     <h:head>
         <h:outputStylesheet  library="css"  name="estilo.css" /> 
     </h:head>
-
+    
     <h:body id="comentarioBody">
         <c:choose>
             <c:when test="#{sesion.estaConectado()}">
-                <div align="center">
-                <p:inputTextarea id="contenido" rows="6" cols="50" maxlength="1000" autoResize="false" style="resize: none" />
-                <p:commandButton id="agrCom" value = "OK" action = "#{manejadorComentario.agregarComentario(preg)}" />
-                </div>
+                <p:inputTextarea id="contenido" rows="6" cols="50" maxlength="1000" autoResize="false"  style="resize: none" />
+                <h:commandButton value = "OK" action="#{manejadorComentario.agregarComentario(preg)}" />
             </c:when>
         </c:choose>
         
         <c:choose>
              <c:when test="#{manejadorComentario.hayComentarios(preg)}">
-                 <h:form id="form" >
                     <ui:repeat id="comentariosDis" value="#{manejadorComentario.getComentarios(preg)}" var="com"  >
                         <div  id="comentario">
                         <h:panelGrid style="width:100%" id="grid" columns="2"  bgcolor="#bcaaa4" cellpadding="2">
@@ -44,14 +41,11 @@ and open the template in the editor.
                         </h:panelGrid>
                         </div>
                     </ui:repeat>
-                </h:form>
             </c:when>
 
             <c:otherwise>
                 <div class ="my-2 my-lg-0">
-                    <h:form id="comentariosVac">
                         <h:outputText value="No hay comentarios para esta pregunta."/>
-                    </h:form>
                 </div>
             </c:otherwise>
         </c:choose>
