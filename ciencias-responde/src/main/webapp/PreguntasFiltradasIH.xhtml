@@ -1,0 +1,44 @@
+<!--
+
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title><h:outputText value="Preguntas Filtradas: " /></title>
+        <h:outputStylesheet library="css" name="estilo.css"/>
+    </h:head>
+    <h:body>
+        <div id="header">
+            <div id="name">
+                <h:outputLink value="PantallaPrincipalIH.xhtml">
+                    <h:graphicImage value = "resources/logo.svg" height="95px"/> 
+                </h:outputLink>
+                <div id="social">
+                    <ui:include src="AccesoIH.xhtml" />
+                </div>
+            </div>
+        </div>
+        <p:dataScroller value="#{manejadorPregunta.getPreguntasPorPalabras(param.search)}" var="preg" chunkSize="10">
+
+            <h:panelGrid columns="2" style="width:100%">
+
+                <p:outputPanel>
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputLink value="PantallaPreguntaIH.xhtml?pid=#{preg.idPregunta}">
+                            <br/>
+                            <h:outputText value="#{preg.titulo}" style="font-weight: bold"/>
+                            <br/>
+                        </h:outputLink>
+                    </h:panelGrid>
+                    <hr />
+                </p:outputPanel>
+            </h:panelGrid>
+        </p:dataScroller>
+
+    </h:body>
+</html>

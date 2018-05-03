@@ -10,6 +10,7 @@ import com.moonsoft.proyecto.model.Pregunta;
 import com.moonsoft.proyecto.model.Tema;
 import com.moonsoft.proyecto.model.Usuario;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -29,8 +30,16 @@ public class ManejadorPregunta {
 
     private Pregunta pregunta;
     private List<Tema> temas;
-    
-    
+    private String busqueda;
+
+    public void setBusqueda(String busqueda) {
+        this.busqueda = busqueda;
+    }
+
+    public String getBusqueda() {
+        return this.busqueda;
+    }
+
     public List<Tema> getTemas() {
         if (temas == null) {
             ConexionBD.conectarBD();
@@ -39,55 +48,68 @@ public class ManejadorPregunta {
         }
         return temas;
     }
-    
+
+    public static boolean esta(String[] a, String ele) {
+        for (int i = 0; i < a.length; i++) {
+            if (a[i] == ele || a[i].equals(ele)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public String agregarPregunta() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         String titulo = ec.getRequestParameterMap().get("form:titulo");
         String descripcion = ec.getRequestParameterMap().get("form:descripcion");
         String tNom = ec.getRequestParameterMap().get("form:tema");
-        
+
         if (descripcion.equals("") || titulo.equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Se deben llenar ambos campos."));
             return "";
         }
 
         //Agregamos pregunta, junto con su tema a la base de datos, 
-        pregunta = new Pregunta(0,descripcion, titulo, new Date());
-        for (Tema t : temas) 
+        pregunta = new Pregunta(0, descripcion, titulo, new Date());
+        for (Tema t : temas) {
             if (t.getNombre().equals(tNom)) {
                 pregunta.setTema(t);
             }
+        }
         Usuario u = (Usuario) ec.getSessionMap().get("usuario");
         pregunta.setIdUsuario(u);
         pregunta.guardarBD();
-        return "PantallaPreguntaIH.xhtml?faces-redirect=true&pid="+pregunta.getIdPregunta();
+        return "PantallaPreguntaIH.xhtml?faces-redirect=true&pid=" + pregunta.getIdPregunta();
     }
-    
+
     public String veAPregunta(Integer id) {
-        return "PantallaPreguntaIH.xhtml?faces-redirect=true&pid="+id;
+        return "PantallaPreguntaIH.xhtml?faces-redirect=true&pid=" + id;
     }
-    
+
     public String getId() {
-        if (pregunta == null) return "8";
+        if (pregunta == null) {
+            return "8";
+        }
         return pregunta.getIdPregunta().toString();
     }
-    
+
     public Pregunta getPregunta(String id) {
-        if (id.equals("")) return null;
+        if (id.equals("")) {
+            return null;
+        }
         if (pregunta == null) {
             try {
                 ConexionBD.conectarBD();
                 Query q = ConexionBD.consultarBD("Pregunta.findByIdPregunta");
                 q.setParameter("idPregunta", Integer.parseInt(id));
                 pregunta = (Pregunta) q.getSingleResult();
-            }
-            catch (NoResultException e) {
+            } catch (NoResultException e) {
                 return null;
             }
         }
         return pregunta;
     }
-    
+
     public List<Pregunta> getPreguntas(String tema) {
         List<Pregunta> preguntas;
         ConexionBD.conectarBD();
@@ -97,8 +119,52 @@ public class ManejadorPregunta {
         Tema t = (Tema) q2.getSingleResult();
         q1.setParameter("tema", t);
         preguntas = (List<Pregunta>) q1.getResultList();
-        
+
         return preguntas;
     }
-    
+
+    public String buscaPreguntasPorPalabras() {
+        return "PreguntasFiltradasIH.xhtml?faces-redirect=true&search=" + this.busqueda;
+    }
+
+    public List<Pregunta> getPreguntasPorPalabras(String busqueda) {
+        busqueda = busqueda.toLowerCase();
+        String[] tmp = busqueda.split(" |\\+");
+        LinkedList<String> palabras = new LinkedList<String>();
+        String[] nexpr = {"la", "el", "los", "las" , "y", "pero","qué","por qué","cuál","dónde","es","en","un","unos","son","quieres"};
+        
+        for (int i = 0; i < tmp.length; i++) {
+            if(!esta(nexpr, tmp[i])){
+            	palabras.add(tmp[i]);
+        	}
+        }
+
+        String[] temass = {"Horarios", "Inscripciones", "Servicio Social", "Titulación", "Posgrado", "Becas"};
+        List<Pregunta> preguntas = new LinkedList<Pregunta>();
+        List<Pregunta> resultado = new LinkedList<Pregunta>();
+        for (String tema : temass) {
+            preguntas.addAll(getPreguntas(tema));
+        }
+
+        for (Pregunta preguntap : preguntas) {
+            if (contienePalabras(preguntap, palabras)) {
+                resultado.add(preguntap);
+            }
+        }
+
+        return resultado;
+    }
+
+    public boolean contienePalabras(Pregunta pregunta, LinkedList<String> palabras) {
+        int contador = 0;
+
+        for (String palabra : palabras) {
+            if (pregunta.getDescripcion().toLowerCase().contains(palabra.toLowerCase())
+                    || pregunta.getTitulo().toLowerCase().contains(palabra.toLowerCase())) {
+                contador++;
+            }
+        }
+
+        return contador > 0;
+    }
 }
