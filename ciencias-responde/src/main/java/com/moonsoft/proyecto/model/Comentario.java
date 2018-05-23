@@ -147,10 +147,10 @@ public class Comentario implements Serializable {
     public String toString() {
         return "com.moonsoft.proyecto.model.Comentario[ idComentario=" + idComentario + " ]";
     }
-    
+
     public void guardarBD() {
         ConexionBD.conectarBD();
-        ConexionBD.insertarBD(this); 
+        ConexionBD.insertarBD(this);
     }
-    
+
 }

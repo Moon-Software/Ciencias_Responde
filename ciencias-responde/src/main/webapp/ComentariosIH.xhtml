@@ -16,7 +16,7 @@ and open the template in the editor.
     <h:head>
         <h:outputStylesheet  library="css"  name="estilo.css" /> 
     </h:head>
-    
+
     <h:body id="comentarioBody">
         <c:choose>
             <c:when test="#{sesion.estaConectado()}">
@@ -24,28 +24,28 @@ and open the template in the editor.
                 <h:commandButton value = "OK" action="#{manejadorComentario.agregarComentario(preg)}" />
             </c:when>
         </c:choose>
-        
+
         <c:choose>
-             <c:when test="#{manejadorComentario.hayComentarios(preg)}">
-                    <ui:repeat id="comentariosDis" value="#{manejadorComentario.getComentarios(preg)}" var="com"  >
-                        <div  id="comentario">
+            <c:when test="#{manejadorComentario.hayComentarios(preg)}">
+                <ui:repeat id="comentariosDis" value="#{manejadorComentario.getComentarios(preg)}" var="com"  >
+                    <div  id="comentario">
                         <h:panelGrid style="width:100%" id="grid" columns="2"  bgcolor="#bcaaa4" cellpadding="2">
                             <h:panelGroup id="info" style="width:20%">
                                 <div align="center">
-                                <h:graphicImage value = "resources/icon.jpg" height="70px"/> 
-                                <br/>
-                                <h:outputText style="font-weight: bold; text-align: center;" value="#{com.idUsuario.nombre}" />
+                                    <h:graphicImage value = "resources/icon.jpg" height="70px"/> 
+                                    <br/>
+                                    <h:outputText style="font-weight: bold; text-align: center;" value="#{com.idUsuario.nombre}" />
                                 </div>
                             </h:panelGroup>
                             <h:outputText value="#{com.contenido}" />
                         </h:panelGrid>
-                        </div>
-                    </ui:repeat>
+                    </div>
+                </ui:repeat>
             </c:when>
 
             <c:otherwise>
                 <div class ="my-2 my-lg-0">
-                        <h:outputText value="No hay comentarios para esta pregunta."/>
+                    <h:outputText value="No hay comentarios para esta pregunta."/>
                 </div>
             </c:otherwise>
         </c:choose>

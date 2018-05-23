@@ -22,16 +22,16 @@ and open the template in the editor.
                 <p:accordionPanel value="#{manejadorPregunta.getTemas()}" var="tema">
                     <p:tab title="#{tema.nombre}">
                         <h:panelGrid columns="2" cellpadding="5">
-                                             
+
                             <h:outputText value="DESCRIPCIÓN: " style="font-weight: bold" />
                             <h:outputText value="#{tema.descripcion}" />
-                                <a href="PreguntasDeTemaIH.xhtml?tid=#{tema.nombre}"> Ir a preguntas asociadas al tema.</a>
-                                
+                            <a href="PreguntasDeTemaIH.xhtml?tid=#{tema.nombre}"> Ir a preguntas asociadas al tema.</a>
+
                         </h:panelGrid>
                     </p:tab>
-                    
+
                 </p:accordionPanel>
-             
+
             </h:form>
         </ui:composition>
     </h:body>

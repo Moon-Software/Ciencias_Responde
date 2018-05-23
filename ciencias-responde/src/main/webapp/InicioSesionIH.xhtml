@@ -13,18 +13,18 @@ and open the template in the editor.
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
-    
+
     <h:head>
         <title>Inicio Sesión</title>
         <h:outputStylesheet  library="css"  name="estilo.css" /> 
     </h:head>
-    
+
     <h:body>
-        
+
         <div id="header">
             <div id="name">
                 <h:outputLink value="PantallaPrincipalIH.xhtml">
-                <h:graphicImage value = "resources/logo.svg" height="95px"/> 
+                    <h:graphicImage value = "resources/logo.svg" height="95px"/> 
                 </h:outputLink>
             </div>
         </div>
@@ -34,24 +34,24 @@ and open the template in the editor.
             <div id="content" style="margin:20px;">
                 <h:form id="myfForm" class="form-inline my-2 my-lg-0">
                     <h:inputText value="#{sesion.usuario.correo}"
-                             required="true" id="Username"
-                             size="15" class="form-control mr-sm-2"
-                             a:placeholder="Correo Electrónico"/>
+                                 required="true" id="Username"
+                                 size="15" class="form-control mr-sm-2"
+                                 a:placeholder="Correo Electrónico"/>
                     <p:spacer width="10"></p:spacer>
                     <h:inputSecret value="#{sesion.usuario.contrasenia}"
-                               required="true" id="Password"
-                               class="form-control mr-sm-2"
-                               a:placeholder="Contraseña"/>
+                                   required="true" id="Password"
+                                   class="form-control mr-sm-2"
+                                   a:placeholder="Contraseña"/>
                     <p:spacer width="10"></p:spacer>
                     <h:commandButton action="#{sesion.iniciarSesion}" value="Acceder"/>
 
                 </h:form>
             </div>
         </div>
-        
+
         <div id="footer">
             MoonSoftware - 2018
         </div>
-        
+
     </h:body>
 </html>

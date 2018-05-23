@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "usuario")
 @XmlRootElement
 @NamedQueries({
-   @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
+    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
     , @NamedQuery(name = "Usuario.findByIdUsuario", query = "SELECT u FROM Usuario u WHERE u.idUsuario = :idUsuario")
     , @NamedQuery(name = "Usuario.findByCorreo", query = "SELECT u FROM Usuario u WHERE u.correo = :correo")
     , @NamedQuery(name = "Usuario.findByNombre", query = "SELECT u FROM Usuario u WHERE u.nombre = :nombre")
@@ -197,10 +197,10 @@ public class Usuario implements Serializable {
     public String toString() {
         return "com.moonsoft.proyecto.model.Usuario[ idUsuario=" + idUsuario + " ]";
     }
-    
+
     public void guardarBD() {
         ConexionBD.conectarBD();
-        ConexionBD.insertarBD(this); 
+        ConexionBD.insertarBD(this);
     }
-    
+
 }

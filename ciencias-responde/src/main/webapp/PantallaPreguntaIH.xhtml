@@ -13,26 +13,26 @@ and open the template in the editor.
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets" 
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-    
+
     <c:set var="preg" value="#{manejadorPregunta.getPregunta(param.pid)}"/> <!-- if and then redirect-->
     <h:head>
         <title><h:outputText value="#{preg.titulo}"/></title>
         <h:outputStylesheet  library="css"  name="estilo.css" /> 
     </h:head>
-    
+
     <h:body>
-        
+
         <div id="header">
             <div id="name">
                 <h:outputLink value="PantallaPrincipalIH.xhtml">
-                <h:graphicImage value = "resources/logo.svg" height="95px"/> 
+                    <h:graphicImage value = "resources/logo.svg" height="95px"/> 
                 </h:outputLink>
-            <div id="social">
-                <ui:include src="AccesoIH.xhtml" />
-            </div>
+                <div id="social">
+                    <ui:include src="AccesoIH.xhtml" />
+                </div>
             </div>
         </div>
-        
+
         <div id="wrapper">
             <c:choose>
                 <c:when test="#{preg != null}">
@@ -47,27 +47,27 @@ and open the template in the editor.
                             <h:outputText value="#{preg.descripcion}"/>
                         </h:panelGrid>
                         <div align="right"><h:outputText value="#{preg.fecha}" /></div>
-                            <br/>
-                            <hr/>
-                            <br/>
-                            <h:form id="areacom">
-                            
+                        <br/>
+                        <hr/>
+                        <br/>
+                        <h:form id="areacom">
+
                             <ui:include src="ComentariosIH.xhtml" >
                                 <ui:param name="preg" value="#{preg}" />
                             </ui:include>
                         </h:form>
                     </div>
                 </c:when>
-            
+
                 <c:otherwise>
                     <ui:include src="PreguntaBorradaIH.xhtml"/>
                 </c:otherwise>
             </c:choose>
         </div>
-        
+
         <div id="footer">
             MoonSoftware - 2018
         </div>
-        
+
     </h:body>
 </html>

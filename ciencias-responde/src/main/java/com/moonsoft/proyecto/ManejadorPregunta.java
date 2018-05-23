@@ -9,9 +9,11 @@ import com.moonsoft.proyecto.model.ConexionBD;
 import com.moonsoft.proyecto.model.Pregunta;
 import com.moonsoft.proyecto.model.Tema;
 import com.moonsoft.proyecto.model.Usuario;
+import java.text.Normalizer;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -49,7 +51,7 @@ public class ManejadorPregunta {
         return temas;
     }
 
-    public static boolean esta(String[] a, String ele) {
+    public static boolean estaContenida(String[] a, String ele) {
         for (int i = 0; i < a.length; i++) {
             if (a[i] == ele || a[i].equals(ele)) {
                 return true;
@@ -123,31 +125,45 @@ public class ManejadorPregunta {
         return preguntas;
     }
 
+    public String deAccent(String str) {
+        String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(nfdNormalizedString).replaceAll("");
+    }
+
     public String buscaPreguntasPorPalabras() {
         return "PreguntasFiltradasIH.xhtml?faces-redirect=true&search=" + this.busqueda;
     }
 
     public List<Pregunta> getPreguntasPorPalabras(String busqueda) {
         busqueda = busqueda.toLowerCase();
+        busqueda = deAccent(busqueda);
+
         String[] tmp = busqueda.split(" |\\+");
         LinkedList<String> palabras = new LinkedList<String>();
-        String[] nexpr = {"la", "el", "los", "las" , "y", "pero","qué","por qué","cuál","dónde","es","en","un","unos","son","quieres"};
-        
+        LinkedList<String> palabrasFinal = new LinkedList<String>();
+        String[] nexpr = {"la", "el", "los", "las", "y", "tan", "pero", "que", "por", "cual", "donde", "es", "en", "un", "unos", "son", "porque"};
+
         for (int i = 0; i < tmp.length; i++) {
-            if(!esta(nexpr, tmp[i])){
-            	palabras.add(tmp[i]);
-        	}
+            palabras.add(tmp[i].replaceAll("[^\\dA-Za-z]", ""));
+        }
+
+        for (String palabra : palabras) {
+            if (!estaContenida(nexpr, palabra)) {
+                palabrasFinal.add(palabra);
+            }
         }
 
         String[] temass = {"Horarios", "Inscripciones", "Servicio Social", "Titulación", "Posgrado", "Becas"};
-        List<Pregunta> preguntas = new LinkedList<Pregunta>();
-        List<Pregunta> resultado = new LinkedList<Pregunta>();
+        List<Pregunta> preguntas = new LinkedList<>();
+        List<Pregunta> resultado = new LinkedList<>();
+
         for (String tema : temass) {
             preguntas.addAll(getPreguntas(tema));
         }
 
         for (Pregunta preguntap : preguntas) {
-            if (contienePalabras(preguntap, palabras)) {
+            if (contienePalabras(preguntap, palabrasFinal)) {
                 resultado.add(preguntap);
             }
         }
@@ -159,8 +175,8 @@ public class ManejadorPregunta {
         int contador = 0;
 
         for (String palabra : palabras) {
-            if (pregunta.getDescripcion().toLowerCase().contains(palabra.toLowerCase())
-                    || pregunta.getTitulo().toLowerCase().contains(palabra.toLowerCase())) {
+            if (deAccent(pregunta.getDescripcion().toLowerCase()).replaceAll("[^\\dA-Za-z]", " ").contains(palabra)
+                    || deAccent(pregunta.getTitulo().toLowerCase()).replaceAll("[^\\dA-Za-z]", " ").contains(palabra)) {
                 contador++;
             }
         }
