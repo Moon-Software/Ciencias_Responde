@@ -11,35 +11,48 @@ and open the template in the editor.
       xmlns:h="http://xmlns.jcp.org/jsf/html" 
       xmlns:p="http://primefaces.org/ui" 
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:head>
         <h:outputStylesheet  library="css"  name="estilo.css" /> 
     </h:head>
 
     <h:body>
-         <c:choose>
+        <c:choose>
 
-                <c:when test="#{sesion.estaConectado()}">
-                    <div class ="my-2 my-lg-0">
-                        <h:form id="perfil">
-                            <h:commandButton value="Perfil"/>
-                        </h:form>
-                    </div>
-                    <div class ="my-2 my-lg-0">
-                        <h:form id="exit">
-                            <h:commandButton action="#{sesion.cerrarSesion()}" value="Cerrar Sesión"/>
-                        </h:form>
-                    </div>
-                </c:when>
-
-                <c:otherwise>
-                    <h:form id="myForm" class="form-inline my-2 my-lg-0">
-                        <h:button value="Iniciar Sesion" outcome="InicioSesionIH.xhtml" />
-                        <p:spacer width="10"></p:spacer>
-                        <h:button value="Registrarse" outcome="RegistroIH.xthml" />
+            <c:when test="#{sesion.estaConectado()}">
+                <div class ="my-2 my-lg-0">
+                    <h:form id="perfil">
+                        <h:commandButton value="Perfil"/>
                     </h:form>
-                </c:otherwise>
+                </div>
+                <div class ="my-2 my-lg-0">
+                    <h:form id="exit">
+                        <h:commandButton action="#{sesion.cerrarSesion()}" value="Cerrar Sesión"/>
+                    </h:form>
+                    <h:form>
+                        <p:inputText id="txt1" value="#{manejadorPregunta.busqueda}" required="true" label="Buscar">
+                            <f:validateLength minimum="2" />
+                        </p:inputText>
+                        <p:commandButton value="Buscar: " update="txt1" action="#{manejadorPregunta.buscaPreguntasPorPalabras}" />
+                    </h:form>
+                </div>
+            </c:when>
+
+            <c:otherwise>
+                <h:form id="myForm" class="form-inline my-2 my-lg-0">
+                    <h:button value="Iniciar Sesion" outcome="InicioSesionIH.xhtml" />
+                    <p:spacer width="10"></p:spacer>
+                    <h:button value="Registrarse" outcome="RegistroIH.xthml" />
+                    <h:form>
+                        <p:inputText id="txt1" value="#{manejadorPregunta.busqueda}" required="true" label="Buscar">
+                            <f:validateLength minimum="2" />
+                        </p:inputText>
+                        <p:commandButton value="Buscar: " update="txt1" action="#{manejadorPregunta.buscaPreguntasPorPalabras}" />
+                    </h:form>
+                </h:form>
+            </c:otherwise>
         </c:choose>
     </h:body>
 </html>
+

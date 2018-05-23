@@ -17,19 +17,16 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.persistence.Query;
 
-
 /**
  *
  * @author Diego Jesus Favela Nava
  */
-
 @ManagedBean(name = "manejadorComentario")
 @ViewScoped
 public class ManejadorComentario {
-    
+
     private List<Comentario> comentarios;
-    
-    
+
     public boolean agregarComentario(Pregunta p) {
         System.out.println("KOOOOKOCKCO");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -44,9 +41,10 @@ public class ManejadorComentario {
         c.guardarBD();
         return false;
     }
-    
+
     /**
      * Creates a new instance of ManejadorComentario
+     *
      * @param id nada
      * @return lista de comentarios
      */
@@ -59,10 +57,10 @@ public class ManejadorComentario {
         }
         return comentarios;
     }
-    
+
     public boolean hayComentarios(Pregunta p) {
         getComentarios(p);
         return !comentarios.isEmpty();
     }
-    
+
 }

@@ -12,22 +12,22 @@ and open the template in the editor.
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
-    
+
     <h:head>
         <title>Pregunta Nueva</title>
         <h:outputStylesheet  library="css"  name="estilo.css" /> 
     </h:head>
-    
+
     <h:body>
-        
+
         <div id="header">
             <div id="name">
                 <h:outputLink value="PantallaPrincipalIH.xhtml">
-                <h:graphicImage value = "resources/logo.svg" height="95px"/> 
+                    <h:graphicImage value = "resources/logo.svg" height="95px"/> 
                 </h:outputLink> 
-            <div id="social">
-                <ui:include src="AccesoIH.xhtml" />
-            </div>
+                <div id="social">
+                    <ui:include src="AccesoIH.xhtml" />
+                </div>
             </div>
         </div>
 
@@ -36,29 +36,29 @@ and open the template in the editor.
             <div id="content" style="margin:20px;">
                 <h:form id="form">
                     <h:panelGrid id="grid" columns="3" cellpadding="5">
-                    <p:outputLabel value="Pegunta: " /> 
+                        <p:outputLabel value="Pregunta: " /> 
                         <p:inputText id="titulo" required="true" requiredMessage="Se debe llenar este campo" />
                         <p:message for="titulo" />
-                        
-                    <p:outputLabel value="Tema: " />
+
+                        <p:outputLabel value="Tema: " />
                         <h:selectOneMenu id="tema">
                             <f:selectItems value="#{manejadorPregunta.temas}" />
                         </h:selectOneMenu>
                         <p:message for="tema" />
                     </h:panelGrid>
                     <p:inputTextarea requiredMessage="Se debe llenar este campo" required="true" 
-                                 id="descripcion" rows="10" cols="75" 
-                                 maxlength="2000" autoResize="false"
-                                 style="resize: none"/>
-                
-                <p:commandButton  immediate="true" value = "Listo" update="grid" action="#{manejadorPregunta.agregarPregunta}" />
+                                     id="descripcion" rows="10" cols="75" 
+                                     maxlength="2000" autoResize="false"
+                                     style="resize: none"/>
+
+                    <p:commandButton  immediate="true" value = "Listo" update="grid" action="#{manejadorPregunta.agregarPregunta}" />
                 </h:form>
             </div>
         </div>
-        
+
         <div id="footer">
             MoonSoftware - 2018
         </div>
-        
+
     </h:body>
 </html>

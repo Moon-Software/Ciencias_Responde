@@ -21,7 +21,7 @@ CREATE TABLE pregunta(
 id_pregunta SERIAL PRIMARY KEY,
 id_usuario INTEGER CONSTRAINT usuario_c REFERENCES usuario(id_usuario),
 descripcion VARCHAR(2000) NOT NULL,
-titulo VARCHAR(50) NOT NULL,
+titulo VARCHAR(100) NOT NULL,
 tema VARCHAR(25) CONSTRAINT tema_c REFERENCES tema(nombre),
 fecha TIMESTAMP NOT NULL
 );

@@ -161,9 +161,9 @@ public class Pregunta implements Serializable {
     public String toString() {
         return "com.moonsoft.proyecto.model.Pregunta[ idPregunta=" + idPregunta + " ]";
     }
-    
+
     public void guardarBD() {
         ConexionBD.conectarBD();
-        ConexionBD.insertarBD(this); 
+        ConexionBD.insertarBD(this);
     }
 }

@@ -23,48 +23,51 @@ public class ConexionBD {
     @PersistenceContext
     private static EntityManager em;
     private static EntityManagerFactory emf;
-    
-    private ConexionBD () {}
-    
-    public static EntityManager conectarBD(){
-        try{
-        if (em == null) {
-            emf = Persistence.createEntityManagerFactory("APP1PU");
-            em = emf.createEntityManager();
-        }
-        }catch (PersistenceException pe) {
-                
+
+    private ConexionBD() {
+    }
+
+    public static EntityManager conectarBD() {
+        try {
+            if (em == null) {
+                emf = Persistence.createEntityManagerFactory("APP1PU");
+                em = emf.createEntityManager();
+            }
+        } catch (PersistenceException pe) {
+
         }
         return em;
     }
-    
-    public static void desconectarBD(){
+
+    public static void desconectarBD() {
         if (em != null) {
-                em.close();
+            em.close();
         }
     }
-    
-    public static void insertarBD(Object o){
+
+    public static void insertarBD(Object o) {
         em.getTransaction().begin();
         em.persist(o);
         em.getTransaction().commit();
     }
-    
-    public static void actualizarBD(){
-    
+
+    public static void actualizarBD() {
+
     }
-    
-    public static void borrarBD(){
-    
+
+    public static void borrarBD() {
+
     }
-    
-    public static Query consultarBD(String q){
-        if (em == null) return null;
+
+    public static Query consultarBD(String q) {
+        if (em == null) {
+            return null;
+        }
         return em.createNamedQuery(q);
     }
-    
-    public static void seleccionarTodosBD(){
-    
+
+    public static void seleccionarTodosBD() {
+
     }
 
 }

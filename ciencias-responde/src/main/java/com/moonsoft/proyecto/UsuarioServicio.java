@@ -22,23 +22,24 @@ import org.primefaces.model.UploadedFile;
  *
  * @author gouen
  */
-@ManagedBean(name = "usuarioServicio" )
+@ManagedBean(name = "usuarioServicio")
 @ViewScoped
 public class UsuarioServicio {
+
     private String correo;
     private String nombre;
     private String contrasenia;
     @Lob
     private UploadedFile file;
- 
+
     public UploadedFile getFile() {
-       return file;
+        return file;
     }
 
     public void setFile(UploadedFile file) {
-       this.file = file;
+        this.file = file;
     }
-    
+
     public String getCorreo() {
         return correo;
     }
@@ -46,7 +47,7 @@ public class UsuarioServicio {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
-    
+
     public String getNombre() {
         return nombre;
     }
@@ -54,7 +55,7 @@ public class UsuarioServicio {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
+
     public String getContrasenia() {
         return contrasenia;
     }
@@ -63,15 +64,15 @@ public class UsuarioServicio {
         this.contrasenia = contrasenia;
     }
 
-    public String agregarUsuario(){
-     
+    public String agregarUsuario() {
+
         String respuesta = "";
         Pattern correoVal = Pattern
                 .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                         + "ciencias\\.unam\\.mx$");
         Matcher mather = correoVal.matcher(correo);
-        if(contrasenia.length() >= 8){
-            if(mather.find() == true){
+        if (contrasenia.length() >= 8) {
+            if (mather.find() == true) {
                 ConexionBD.conectarBD();
                 Query q = ConexionBD.consultarBD("Usuario.findByCorreo");
                 q.setParameter("correo", correo);
@@ -80,16 +81,16 @@ public class UsuarioServicio {
                     return "";
                 }
                 Usuario usr = new Usuario(0, correo, nombre, contrasenia, new Date(), false);
-                Email em = new Email(correo,nombre,contrasenia);
+                Email em = new Email(correo, nombre, contrasenia);
                 em.sendEmail();
                 usr.guardarBD();
                 respuesta = "RegistroExitosoIH.xhtml?faces-redirect=true";
-            }else{
+            } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "El correo debe tener dominio @ciencias.unam.mx"));
             }
-        }else{
+        } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "La contraseña de contener al menos 8 caracteres"));
         }
-        return respuesta;   
+        return respuesta;
     }
 }

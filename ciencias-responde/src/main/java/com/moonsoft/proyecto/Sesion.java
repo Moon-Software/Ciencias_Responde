@@ -22,15 +22,14 @@ import javax.persistence.Query;
 public class Sesion {
 
     private Usuario usuario;
-    
+
     /**
      * Creates a new instance of Sesion
      */
     public Sesion() {
         usuario = new Usuario();
     }
-    
-    
+
     public Usuario getusuario() {
         return usuario;
     }
@@ -38,7 +37,7 @@ public class Sesion {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-    
+
     public String iniciarSesion() {
         Usuario l = encuentraUsuario(usuario.getCorreo(), usuario.getContrasenia());
         boolean logged = l != null;
@@ -50,25 +49,25 @@ public class Sesion {
 
         return "InicioSesionIH.xhtml?faces-redirect=true";
     }
-    
+
     public String cerrarSesion() {
         System.out.println("chingados");
         FacesContext context = getCurrentInstance();
         context.getExternalContext().invalidateSession();
         return "PantallaPrincipalIH.xhtml?faces-redirect=true";
     }
-    
+
     public boolean estaConectado() {
         FacesContext context = getCurrentInstance();
         Usuario l = (Usuario) context.getExternalContext().getSessionMap().get("usuario");
         return l != null;
     }
-    
+
     public static Usuario getUsuario() {
         FacesContext context = getCurrentInstance();
         return (Usuario) context.getExternalContext().getSessionMap().get("usuario");
     }
-    
+
     public Usuario encuentraUsuario(String correo, String contrasenia) {
         ConexionBD.conectarBD();
         Query q = ConexionBD.consultarBD("Usuario.findByCorrAndContra")
@@ -78,5 +77,5 @@ public class Sesion {
             return null;
         }
         return (Usuario) q.getSingleResult();
-}
+    }
 }
