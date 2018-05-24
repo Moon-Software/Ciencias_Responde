@@ -32,38 +32,74 @@ public class UsuarioServicio {
     @Lob
     private UploadedFile file;
 
+    /**
+     *
+     * @return
+     */
     public UploadedFile getFile() {
         return file;
     }
 
+    /**
+     *
+     * @param file
+     */
     public void setFile(UploadedFile file) {
         this.file = file;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getCorreo() {
         return correo;
     }
 
+    /**
+     *
+     * @param correo
+     */
     public void setCorreo(String correo) {
         this.correo = correo;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getNombre() {
         return nombre;
     }
 
+    /**
+     *
+     * @param nombre
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getContrasenia() {
         return contrasenia;
     }
 
+    /**
+     *
+     * @param contrasenia
+     */
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
     }
 
+    /**
+     *
+     * @return
+     */
     public String agregarUsuario() {
 
         String respuesta = "";
@@ -72,7 +108,7 @@ public class UsuarioServicio {
                         + "ciencias\\.unam\\.mx$");
         Matcher mather = correoVal.matcher(correo);
         if (contrasenia.length() >= 8) {
-            if (mather.find() == true) {
+            if (true == mather.find()) {
                 ConexionBD.conectarBD();
                 Query q = ConexionBD.consultarBD("Usuario.findByCorreo");
                 q.setParameter("correo", correo);

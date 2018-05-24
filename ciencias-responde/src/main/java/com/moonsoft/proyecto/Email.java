@@ -16,19 +16,32 @@ import javax.mail.Session;
  */
 public class Email {
 
-    UsuarioServicio usr = new UsuarioServicio();
-    final String fromEmail = "cienciasrespondeing@gmail.com"; //requires valid gmail id
-    final String password = "ciencias123"; // correct password for gmail id
+    private final UsuarioServicio usr;
+    final String fromEmail;
+    final String password; 
     final String toEmail;
-    private String nombre;
-    private String contrasenia;
+    private final String nombre;
+    private final String contrasenia;
 
+    /**
+     * Contructor del mail
+     * 
+     * @param correo correo
+     * @param nombre nombre
+     * @param contrasenia mail
+     */
     public Email(String correo, String nombre, String contrasenia) {
+        this.usr = new UsuarioServicio();
+        this.password = "ciencias123";
+        this.fromEmail = "cienciasrespondeing@gmail.com";
         this.toEmail = correo;
         this.nombre = nombre;
         this.contrasenia = contrasenia;
     }
 
+    /**
+     * Método para enviar correo.
+     */
     public void sendEmail() {
         System.out.println("SSLEmail Start");
         Properties props = new Properties();
@@ -41,6 +54,7 @@ public class Email {
 
         Authenticator auth = new Authenticator() {
             //override the getPasswordAuthentication method
+            @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(fromEmail, password);
             }
@@ -49,7 +63,8 @@ public class Email {
         Session session = Session.getDefaultInstance(props, auth);
         System.out.println("Session created");
 
-        EmailUtil.sendEmail(session, toEmail, "Creacion de cuenta", "Gracias por registrarte en CienciasResponde\n"
+        EmailUtil.sendEmail(session, toEmail, "Creacion de cuenta", 
+                "Gracias por registrarte en CienciasResponde\n"
                 + "Tu nombre es: " + nombre + "\n"
                 + "Tu contraseña es: " + contrasenia);
 
