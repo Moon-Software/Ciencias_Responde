@@ -34,14 +34,26 @@ public class ManejadorPregunta {
     private List<Tema> temas;
     private String busqueda;
 
+    /**
+     * setea
+     * @param busqueda
+     */
     public void setBusqueda(String busqueda) {
         this.busqueda = busqueda;
     }
 
+    /**
+     * regresa cadena
+     * @return
+     */
     public String getBusqueda() {
         return this.busqueda;
     }
 
+    /**
+     * obtiene temas
+     * @return
+     */
     public List<Tema> getTemas() {
         if (temas == null) {
             ConexionBD.conectarBD();
@@ -51,6 +63,12 @@ public class ManejadorPregunta {
         return temas;
     }
 
+    /**
+     * Está contenida
+     * @param a
+     * @param ele
+     * @return
+     */
     public static boolean estaContenida(String[] a, String ele) {
         for (int i = 0; i < a.length; i++) {
             if (a[i] == ele || a[i].equals(ele)) {
@@ -60,6 +78,10 @@ public class ManejadorPregunta {
         return false;
     }
 
+    /**
+     * agrega una pregunta
+     * @return
+     */
     public String agregarPregunta() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         String titulo = ec.getRequestParameterMap().get("form:titulo");
@@ -84,10 +106,19 @@ public class ManejadorPregunta {
         return "PantallaPreguntaIH.xhtml?faces-redirect=true&pid=" + pregunta.getIdPregunta();
     }
 
+    /**
+     * va a la pregunta dado un id
+     * @param id
+     * @return
+     */
     public String veAPregunta(Integer id) {
         return "PantallaPreguntaIH.xhtml?faces-redirect=true&pid=" + id;
     }
 
+    /**
+     * obtiene el id
+     * @return
+     */
     public String getId() {
         if (pregunta == null) {
             return "8";
@@ -95,6 +126,11 @@ public class ManejadorPregunta {
         return pregunta.getIdPregunta().toString();
     }
 
+    /**
+     * obtiene pregunta
+     * @param id
+     * @return
+     */
     public Pregunta getPregunta(String id) {
         if (id.equals("")) {
             return null;
@@ -112,6 +148,11 @@ public class ManejadorPregunta {
         return pregunta;
     }
 
+    /**
+     * regresa preguntas
+     * @param tema
+     * @return
+     */
     public List<Pregunta> getPreguntas(String tema) {
         List<Pregunta> preguntas;
         ConexionBD.conectarBD();
@@ -125,16 +166,30 @@ public class ManejadorPregunta {
         return preguntas;
     }
 
+    /**
+     * asi
+     * @param str
+     * @return
+     */
     public String deAccent(String str) {
         String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
         return pattern.matcher(nfdNormalizedString).replaceAll("");
     }
 
+    /**
+     *
+     * @return
+     */
     public String buscaPreguntasPorPalabras() {
         return "PreguntasFiltradasIH.xhtml?faces-redirect=true&search=" + this.busqueda;
     }
 
+    /**
+     *
+     * @param busqueda
+     * @return
+     */
     public List<Pregunta> getPreguntasPorPalabras(String busqueda) {
         busqueda = busqueda.toLowerCase();
         busqueda = deAccent(busqueda);
@@ -171,6 +226,12 @@ public class ManejadorPregunta {
         return resultado;
     }
 
+    /**
+     *
+     * @param pregunta
+     * @param palabras
+     * @return
+     */
     public boolean contienePalabras(Pregunta pregunta, LinkedList<String> palabras) {
         int contador = 0;
 

@@ -30,14 +30,26 @@ public class Sesion {
         usuario = new Usuario();
     }
 
+    /**
+     *
+     * @return
+     */
     public Usuario getusuario() {
         return usuario;
     }
 
+    /**
+     *
+     * @param usuario
+     */
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 
+    /**
+     *
+     * @return
+     */
     public String iniciarSesion() {
         Usuario l = encuentraUsuario(usuario.getCorreo(), usuario.getContrasenia());
         boolean logged = l != null;
@@ -50,6 +62,10 @@ public class Sesion {
         return "InicioSesionIH.xhtml?faces-redirect=true";
     }
 
+    /**
+     *
+     * @return
+     */
     public String cerrarSesion() {
         System.out.println("chingados");
         FacesContext context = getCurrentInstance();
@@ -57,17 +73,31 @@ public class Sesion {
         return "PantallaPrincipalIH.xhtml?faces-redirect=true";
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean estaConectado() {
         FacesContext context = getCurrentInstance();
         Usuario l = (Usuario) context.getExternalContext().getSessionMap().get("usuario");
         return l != null;
     }
 
+    /**
+     *
+     * @return
+     */
     public static Usuario getUsuario() {
         FacesContext context = getCurrentInstance();
         return (Usuario) context.getExternalContext().getSessionMap().get("usuario");
     }
 
+    /**
+     *
+     * @param correo
+     * @param contrasenia
+     * @return
+     */
     public Usuario encuentraUsuario(String correo, String contrasenia) {
         ConexionBD.conectarBD();
         Query q = ConexionBD.consultarBD("Usuario.findByCorrAndContra")

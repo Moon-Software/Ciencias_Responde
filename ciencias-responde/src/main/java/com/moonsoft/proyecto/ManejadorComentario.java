@@ -27,6 +27,11 @@ public class ManejadorComentario {
 
     private List<Comentario> comentarios;
 
+    /**
+     * agrega comentarios
+     * @param p
+     * @return no
+     */
     public boolean agregarComentario(Pregunta p) {
         System.out.println("KOOOOKOCKCO");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -45,6 +50,7 @@ public class ManejadorComentario {
     /**
      * Creates a new instance of ManejadorComentario
      *
+     * @param p sdfsdf
      * @param id nada
      * @return lista de comentarios
      */
@@ -58,6 +64,11 @@ public class ManejadorComentario {
         return comentarios;
     }
 
+    /**
+     * hay comentarios
+     * @param p
+     * @return si
+     */
     public boolean hayComentarios(Pregunta p) {
         getComentarios(p);
         return !comentarios.isEmpty();
