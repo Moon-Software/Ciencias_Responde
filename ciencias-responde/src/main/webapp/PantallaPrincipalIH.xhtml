@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3c.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    
+    <h:head>
+        <title>Inicio</title>
+        <h:outputStylesheet  library="css"  name="estilo.css" /> 
+    </h:head>
+    
+    <h:body>
+        
+        <div id="header">
+            <div id="name">
+                <h:outputLink value="PantallaPrincipalIH.xhtml">
+                <h:graphicImage value = "resources/logo.svg" height="95px"/> 
+                </h:outputLink>
+                <div id="social">
+                    <ui:include src="AccesoIH.xhtml" />
+                </div>
+            </div>
+        </div>
+
+        <div id="wrapper">
+            <h2> ¡Bienvenido/a a Ciencias Responde!</h2>
+            <div id="content">
+                <h:outputText value="Temas:"/>
+                <ui:decorate template="TemasIH.xhtml">
+                        <ui:define name="wat_content" >
+                            <ui:define name="dataModelTemas" >
+                                <ui:include src="TemasIH.xhtml" />
+                            </ui:define>
+                        </ui:define>
+                    </ui:decorate>
+            </div>
+        </div>
+        
+        <div id="footer">
+            MoonSoftware - 2018
+        </div>
+        
+    </h:body>
+</html>

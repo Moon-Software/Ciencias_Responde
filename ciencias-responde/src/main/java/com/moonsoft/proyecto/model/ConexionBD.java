@@ -6,26 +6,34 @@
 package com.moonsoft.proyecto.model;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import org.primefaces.push.annotation.Singleton;
 
 /**
  *
- * @author gouen
+ * @author Diego Jesus Favela Nava
  */
 @Singleton
 public class ConexionBD {
 
     @PersistenceContext
     private static EntityManager em;
+    private static EntityManagerFactory emf;
     
     private ConexionBD () {}
     
     public static EntityManager conectarBD(){
+        try{
         if (em == null) {
-            em = Persistence.createEntityManagerFactory("com.moonsoft.proyecto_ciencias-responde_war_0.0.1PU").createEntityManager();
+            emf = Persistence.createEntityManagerFactory("APP1PU");
+            em = emf.createEntityManager();
+        }
+        }catch (PersistenceException pe) {
+                
         }
         return em;
     }
@@ -37,22 +45,19 @@ public class ConexionBD {
     }
     
     public static void insertarBD(Object o){
-        try{
-            em.getTransaction().begin();
-            em.persist(o);
-            em.getTransaction().commit();
-            System.out.println("El usuario se agrego correctamente a la base");
-        }catch(Exception e){
-            System.out.println(e);
-        }
+        em.getTransaction().begin();
+        em.persist(o);
+        em.getTransaction().commit();
     }
     
     public static void actualizarBD(){
     
     }
     
-    public static void borrarBD(){
-    
+    public static void borrarBD(Object o){
+        em.getTransaction().begin();
+        em.remove(o);
+        em.getTransaction().commit();
     }
     
     public static Query consultarBD(String q){

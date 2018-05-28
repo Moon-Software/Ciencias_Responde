@@ -53,10 +53,7 @@ class EmailUtil {
             msg.setSentDate(new Date());
 
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
-            System.out.println("Message is ready");
             Transport.send(msg);  
-
-            System.out.println("EMail Sent Successfully!!");
         }catch (Exception e) {
           e.printStackTrace();
         }

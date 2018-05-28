@@ -16,8 +16,9 @@ and open the template in the editor.
     <h:body>
         <div id="header">
             <div id="name">
-                <h:graphicImage value="resources/logo.svg" height="95px"/>
-                <div id="social"> -SOCIAL- </div>
+                <h:outputLink value="PantallaPrincipalIH.xhtml">
+                <h:graphicImage value = "resources/logo.svg" height="95px"/> 
+                </h:outputLink>
             </div>
         </div>
         <div id="wrapper">
@@ -45,7 +46,8 @@ and open the template in the editor.
                                      label="Confirmacion de Password"/>
                          <p:message for="confPassword" />
                      </h:panelGrid>
-                     <p:fileUpload value="#{usuarioServicio.file}"  mode="simple" skinSimple="true" allowTypes="(\.|\/)(gif|jpe?g|png)$/" sizeLimit="10000000"/>
+                     <p:fileUpload value="#{usuarioServicio.file}" mode="simple" skinSimple="true" allowTypes="(\.|\/)(|jpe?g|png)$/" sizeLimit="10000000"
+                                   fileUploadListener="#{usuarioServicio.fileUploadListener}"/>
                      <p:spacer height="20"/>
                      <p:separator/>
                      <p:spacer width="10"></p:spacer>

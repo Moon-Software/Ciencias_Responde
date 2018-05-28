@@ -6,8 +6,10 @@
 package com.moonsoft.proyecto.model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,26 +18,28 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author gouen
+ * @author Faded
  */
 @Entity
 @Table(name = "usuario")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
+   @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
     , @NamedQuery(name = "Usuario.findByIdUsuario", query = "SELECT u FROM Usuario u WHERE u.idUsuario = :idUsuario")
     , @NamedQuery(name = "Usuario.findByCorreo", query = "SELECT u FROM Usuario u WHERE u.correo = :correo")
     , @NamedQuery(name = "Usuario.findByNombre", query = "SELECT u FROM Usuario u WHERE u.nombre = :nombre")
     , @NamedQuery(name = "Usuario.findByContrasenia", query = "SELECT u FROM Usuario u WHERE u.contrasenia = :contrasenia")
+    , @NamedQuery(name = "Usuario.findByCorrAndContra", query = "SELECT u FROM Usuario u WHERE u.correo = :correo AND u.contrasenia = :contrasenia")
     , @NamedQuery(name = "Usuario.findByFRegistro", query = "SELECT u FROM Usuario u WHERE u.fRegistro = :fRegistro")
     , @NamedQuery(name = "Usuario.findByEsAdmin", query = "SELECT u FROM Usuario u WHERE u.esAdmin = :esAdmin")
     , @NamedQuery(name = "Usuario.findBySesion", query = "SELECT u FROM Usuario u WHERE u.sesion = :sesion")})
@@ -48,34 +52,30 @@ public class Usuario implements Serializable {
     @Column(name = "id_usuario")
     private Integer idUsuario;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "correo")
     private String correo;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "nombre")
     private String nombre;
     @Lob
     @Column(name = "foto")
     private byte[] foto;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 15)
     @Column(name = "contrasenia")
     private String contrasenia;
     @Basic(optional = false)
-    @Temporal(TemporalType.DATE)
     @Column(name = "f_registro")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fRegistro;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "es_admin")
     private boolean esAdmin;
-    @Size(max = 50)
     @Column(name = "sesion")
-    private String sesion;
+    private Boolean sesion;
+    @OneToMany(mappedBy = "idUsuario")
+    private Collection<Comentario> comentarioCollection;
+    @OneToMany(mappedBy = "idUsuario")
+    private Collection<Pregunta> preguntaCollection;
 
     public Usuario() {
     }
@@ -84,14 +84,13 @@ public class Usuario implements Serializable {
         this.idUsuario = idUsuario;
     }
 
-    public Usuario(Integer idUsuario, String correo, String nombre, byte[] fotos,String contrasenia,Date fRegistro, boolean esAdmin,String sesion) {
+    public Usuario(Integer idUsuario, String correo, String nombre, String contrasenia, Date fRegistro, boolean esAdmin) {
         this.idUsuario = idUsuario;
         this.correo = correo;
         this.nombre = nombre;
         this.contrasenia = contrasenia;
         this.fRegistro = fRegistro;
         this.esAdmin = esAdmin;
-        this.sesion = sesion;
     }
 
     public Integer getIdUsuario() {
@@ -150,12 +149,30 @@ public class Usuario implements Serializable {
         this.esAdmin = esAdmin;
     }
 
-    public String getSesion() {
+    public Boolean getSesion() {
         return sesion;
     }
 
-    public void setSesion(String sesion) {
+    public void setSesion(Boolean sesion) {
         this.sesion = sesion;
+    }
+
+    @XmlTransient
+    public Collection<Comentario> getComentarioCollection() {
+        return comentarioCollection;
+    }
+
+    public void setComentarioCollection(Collection<Comentario> comentarioCollection) {
+        this.comentarioCollection = comentarioCollection;
+    }
+
+    @XmlTransient
+    public Collection<Pregunta> getPreguntaCollection() {
+        return preguntaCollection;
+    }
+
+    public void setPreguntaCollection(Collection<Pregunta> preguntaCollection) {
+        this.preguntaCollection = preguntaCollection;
     }
 
     @Override
@@ -184,14 +201,12 @@ public class Usuario implements Serializable {
     }
     
     public void guardarBD() {
-        try{
-            ConexionBD.conectarBD();
-            ConexionBD.insertarBD(this); 
-            System.out.println("El usuario se agrego correctamente a la base");
-        }catch(Exception e){
-            System.out.println(e);
-        }
-        
+        ConexionBD.conectarBD();
+        ConexionBD.insertarBD(this); 
     }
     
+    public void borrarBD(){
+        ConexionBD.conectarBD();
+        ConexionBD.borrarBD(this);
+    }
 }

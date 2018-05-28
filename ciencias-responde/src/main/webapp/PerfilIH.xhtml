@@ -1,0 +1,61 @@
+<!--
+
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+        
+    <c:set var="usr" value="#{manejadorPerfil.getUsuario(param.uid)}"/> <!-- if and then redirect-->
+    <h:head>
+        <title>Perfil</title>
+        <h:outputStylesheet library="css" name="estilo.css"/>
+    </h:head>
+    <h:body>
+        <div id="header">
+            <div id="name">
+                <h:outputLink value="PantallaPrincipalIH.xhtml">
+                <h:graphicImage value = "resources/logo.svg" height="95px"/> 
+                </h:outputLink>
+            </div>
+        </div>
+        <div id="wrapper">
+            <h2> Perfil </h2>
+             <div id="content"> 
+                 <h:form enctype="multipart/form-data" id="form">
+                     <p:messages id="messages" showDetail="true" closable="true" autoUpdate="true" ></p:messages>
+                     <h:panelGrid id="grid" columns="2" cellpadding="5">
+                         <p:outputLabel value="Nombre:" />
+                         <p:outputLabel value="#{usr.nombre}"/>  
+                         <p:outputLabel value="Correo:" />
+                         <c:set var="correo" value="#{usr.correo}"/>
+                         <p:outputLabel value="${correo}"/>
+                         <c:choose>
+                            <c:when test="#{manejadorPerfil.esAdmin()}">
+                                <div class ="my-2 my-lg-0">
+                                   <h:form id="eliminar">
+                                       <h:commandButton value="Eliminar usuario" />
+                                   </h:form>
+                               </div>
+                            </c:when>
+                             <c:when test="#{usr.idUsuario == manejadorPerfil.idActivo()}">
+                                <div class ="my-2 my-lg-0">
+                                   <h:form id="eliminar">
+                                       <h:commandButton value="Eliminar usuario" actionListener="#{usuarioServicio.borrarUsuario(param.uid)}"/>
+                                   </h:form>
+                               </div>
+                            </c:when> 
+                         </c:choose>
+                     </h:panelGrid>
+                 </h:form>
+             </div>
+        </div>
+        
+        <div id="footer"> MoonSoftware - 2018 </div>
+    </h:body>
+</html>

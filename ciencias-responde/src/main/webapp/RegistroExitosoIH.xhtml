@@ -10,15 +10,16 @@ and open the template in the editor.
       xmlns:p="http://primefaces.org/ui"
       xmlns:pm="http://primefaces.org/mobile">
     <h:head>
-        <title>Nombre de la pagina</title>
+        <title>¡Registro Exitoso!</title>
         <h:outputStylesheet library="css" name="estilo.css"/>
     </h:head>
     <h:body>
         <pm:page id ="registroExitosoIH">
         <div id="header">
             <div id="name">
-                <h:graphicImage value="resources/logo.svg" height="95px"/>
-                <div id="social"> -SOCIAL- </div>
+                <h:outputLink value="PantallaPrincipalIH.xhtml?faces-redirect=true">
+                <h:graphicImage value = "resources/logo.svg" height="95px"/> 
+                </h:outputLink>
             </div>
         </div>
         <div id="wrapper">
@@ -27,7 +28,7 @@ and open the template in the editor.
                 <h:form>
                     <p:outputPanel deferred="true">
                         <h3></h3>
-                        <p>Gracias por registrarte en Ciencias Responde. Se te a mandado un correo con tus datos.</p>
+                        <p>Gracias por registrarte en Ciencias Responde. Se te ha mandado un correo con tus datos.</p>
                     </p:outputPanel>
                 </h:form>
              </div>
