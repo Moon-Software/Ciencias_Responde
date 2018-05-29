@@ -72,9 +72,9 @@ public class Usuario implements Serializable {
     private boolean esAdmin;
     @Column(name = "sesion")
     private Boolean sesion;
-    @OneToMany(mappedBy = "idUsuario")
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE},mappedBy = "idUsuario")
     private Collection<Comentario> comentarioCollection;
-    @OneToMany(mappedBy = "idUsuario")
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE},mappedBy = "idUsuario")
     private Collection<Pregunta> preguntaCollection;
 
     public Usuario() {
@@ -205,7 +205,7 @@ public class Usuario implements Serializable {
         ConexionBD.insertarBD(this); 
     }
     
-    public void borrarBD(){
+    public void eliminarBD(){
         ConexionBD.conectarBD();
         ConexionBD.borrarBD(this);
     }

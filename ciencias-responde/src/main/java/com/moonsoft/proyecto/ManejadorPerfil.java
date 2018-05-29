@@ -17,7 +17,9 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import static javax.faces.context.FacesContext.getCurrentInstance;
+import javax.persistence.CascadeType;
 import javax.persistence.NoResultException;
+import javax.persistence.OneToOne;
 import javax.persistence.Query;
 
 /**
@@ -60,5 +62,10 @@ public class ManejadorPerfil {
     
     public String veAPerfil(Integer id) {
         return "PerfilIH.xhtml?faces-redirect=true&uid="+id;
+    }
+    
+    public String borrarUsuario(){
+        usr.eliminarBD();
+        return "PantallaPrincipalIH.xhtml?faces-redirect=true";
     }
 }

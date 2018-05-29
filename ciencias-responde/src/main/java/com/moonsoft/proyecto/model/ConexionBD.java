@@ -55,9 +55,14 @@ public class ConexionBD {
     }
     
     public static void borrarBD(Object o){
+        EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
+        if (!em.contains(o)) {
+            o = em.merge(o);
+        }
         em.remove(o);
         em.getTransaction().commit();
+        em.close();
     }
     
     public static Query consultarBD(String q){

@@ -124,13 +124,6 @@ public class UsuarioServicio {
         return respuesta;   
     }
     
-    public String borrarUsuario(String id){
-        ManejadorPerfil prf = new ManejadorPerfil();
-        Usuario usr = prf.getUsuario(id);
-        usr.borrarBD();
-        return "PantallaPrincipalIH.xhtml";
-    }
-    
     public static String encrypt(String key, String iv, String cleartext) throws Exception {
         Cipher cipher = Cipher.getInstance(cI);
         SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(), alg);
