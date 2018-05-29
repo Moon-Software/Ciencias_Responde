@@ -23,7 +23,7 @@ and open the template in the editor.
             <c:when test="#{sesion.estaConectado()}">
                 <div class ="my-2 my-lg-0">
                     <h:form id="perfil">
-                        <h:commandButton value="Perfil"/>
+                        <h:button value="Perfil" outcome = "PerfilIH.xhtml?uid=#{manejadorPerfil.idActivo()}"/>
                     </h:form>
                 </div>
                 <div class ="my-2 my-lg-0">

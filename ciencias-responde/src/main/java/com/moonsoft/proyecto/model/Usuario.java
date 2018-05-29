@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,7 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "usuario")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
+   @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
     , @NamedQuery(name = "Usuario.findByIdUsuario", query = "SELECT u FROM Usuario u WHERE u.idUsuario = :idUsuario")
     , @NamedQuery(name = "Usuario.findByCorreo", query = "SELECT u FROM Usuario u WHERE u.correo = :correo")
     , @NamedQuery(name = "Usuario.findByNombre", query = "SELECT u FROM Usuario u WHERE u.nombre = :nombre")
@@ -70,9 +72,9 @@ public class Usuario implements Serializable {
     private boolean esAdmin;
     @Column(name = "sesion")
     private Boolean sesion;
-    @OneToMany(mappedBy = "idUsuario")
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE},mappedBy = "idUsuario")
     private Collection<Comentario> comentarioCollection;
-    @OneToMany(mappedBy = "idUsuario")
+    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE},mappedBy = "idUsuario")
     private Collection<Pregunta> preguntaCollection;
 
     public Usuario() {
@@ -197,10 +199,14 @@ public class Usuario implements Serializable {
     public String toString() {
         return "com.moonsoft.proyecto.model.Usuario[ idUsuario=" + idUsuario + " ]";
     }
-
+    
     public void guardarBD() {
         ConexionBD.conectarBD();
-        ConexionBD.insertarBD(this);
+        ConexionBD.insertarBD(this); 
     }
-
+    
+    public void eliminarBD(){
+        ConexionBD.conectarBD();
+        ConexionBD.borrarBD(this);
+    }
 }

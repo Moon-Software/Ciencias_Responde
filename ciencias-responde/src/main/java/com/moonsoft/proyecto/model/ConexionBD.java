@@ -52,11 +52,13 @@ public class ConexionBD {
     public static void actualizarBD() {
 
     }
-
-    public static void borrarBD(Object o) {
+    
+    public static void borrarBD(Object o){
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        Object o2 = em.merge(o);
+        if (!em.contains(o)) {
+            o = em.merge(o);
+        }
         em.remove(o);
         em.getTransaction().commit();
         em.close();
