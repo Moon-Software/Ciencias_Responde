@@ -29,22 +29,29 @@ public class ManejadorComentario {
 
     /**
      * agrega comentarios
+     *
      * @param p
      * @return no
      */
-    public boolean agregarComentario(Pregunta p) {
-        System.out.println("KOOOOKOCKCO");
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        Usuario u = (Usuario) ec.getSessionMap().get("usuario");
-        String contenido = ec.getRequestParameterMap().get("areacom:contenido");
+    public String agregarComentario(Pregunta p) {
+        try {
+            if (p == null) {
+                return "PantallaPrincipalIH.xhtml";
+            }
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            Usuario u = (Usuario) ec.getSessionMap().get("usuario");
+            String contenido = ec.getRequestParameterMap().get("areacom:contenido");
 
-        //Agregamos pregunta, junto con su tema a la base de datos, 
-        Comentario c = new Comentario(0, contenido, 0, new Date());
-        c.setIdPregunta(p);
-        c.setIdUsuario(u);
-        //pregunta.setUsuario(usr);
-        c.guardarBD();
-        return false;
+            //Agregamos pregunta, junto con su tema a la base de datos, 
+            Comentario c = new Comentario(0, contenido, 0, new Date());
+            c.setIdPregunta(p);
+            c.setIdUsuario(u);
+            //pregunta.setUsuario(usr);
+            c.guardarBD();
+            return "PantallaPreguntaIH.xhtml?faces-redirect=true&amp;pid=" + p.getIdPregunta();
+        } catch (Exception n) {
+            return "ErrorConexionIHF.xhtml?faces-redirect=true";
+        }
     }
 
     /**
@@ -55,17 +62,22 @@ public class ManejadorComentario {
      * @return lista de comentarios
      */
     public List<Comentario> getComentarios(Pregunta p) {
-        if (comentarios == null) {
-            ConexionBD.conectarBD();
-            Query q = ConexionBD.consultarBD("Comentario.findByIdPregunta");
-            q.setParameter("idPregunta", p);
-            comentarios = (List<Comentario>) q.getResultList();
+        try {
+            if (comentarios == null) {
+                ConexionBD.conectarBD();
+                Query q = ConexionBD.consultarBD("Comentario.findByIdPregunta");
+                q.setParameter("idPregunta", p);
+                comentarios = (List<Comentario>) q.getResultList();
+            }
+            return comentarios;
+        } catch (Exception n) {
+            return null;
         }
-        return comentarios;
     }
 
     /**
      * hay comentarios
+     *
      * @param p
      * @return si
      */

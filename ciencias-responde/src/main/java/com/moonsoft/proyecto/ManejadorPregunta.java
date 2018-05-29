@@ -36,6 +36,7 @@ public class ManejadorPregunta {
 
     /**
      * setea
+     *
      * @param busqueda
      */
     public void setBusqueda(String busqueda) {
@@ -44,6 +45,7 @@ public class ManejadorPregunta {
 
     /**
      * regresa cadena
+     *
      * @return
      */
     public String getBusqueda() {
@@ -52,19 +54,91 @@ public class ManejadorPregunta {
 
     /**
      * obtiene temas
+     *
      * @return
      */
     public List<Tema> getTemas() {
-        if (temas == null) {
-            ConexionBD.conectarBD();
-            Query q = ConexionBD.consultarBD("Tema.findAll");
-            temas = (List<Tema>) q.getResultList();
+        try {
+            if (temas == null) {
+                ConexionBD.conectarBD();
+                Query q = ConexionBD.consultarBD("Tema.findAll");
+                temas = (List<Tema>) q.getResultList();
+            }
+            return temas;
+        } catch (Exception n) {
+            return null;
         }
-        return temas;
+    }
+
+    /**
+     * agrega una pregunta
+     *
+     * @return
+     */
+    public String agregarPregunta() {
+        try {
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            String titulo = ec.getRequestParameterMap().get("form:titulo");
+            String descripcion = ec.getRequestParameterMap().get("form:descripcion");
+            String tNom = ec.getRequestParameterMap().get("form:tema");
+
+            if (descripcion.equals("") || titulo.equals("")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Se deben llenar ambos campos."));
+                return "";
+            }
+
+            //Agregamos pregunta, junto con su tema a la base de datos, 
+            pregunta = new Pregunta(0, descripcion, titulo, new Date());
+            for (Tema t : temas) {
+                if (t.getNombre().equals(tNom)) {
+                    pregunta.setTema(t);
+                }
+            }
+            Usuario u = (Usuario) ec.getSessionMap().get("usuario");
+            pregunta.setIdUsuario(u);
+            pregunta.guardarBD();
+            return "PantallaPreguntaIH.xhtml?faces-redirect=true&amp;pid=" + pregunta.getIdPregunta();
+
+        } catch (Exception n) {
+            return "ErrorConexionIHF.xhtml?faces-redirect=true";
+        }
+    }
+
+    /**
+     * Revisa si una pregunta es de un usuario o administrador
+     *
+     * @return si es borrable
+     */
+    public boolean esBorrable() {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        Usuario u = (Usuario) ec.getSessionMap().get("usuario");
+        if (u == null) {
+            return false;
+        }
+        if (u.getEsAdmin()) {
+            return true;
+        }
+        return pregunta.getIdUsuario().getIdUsuario().equals(u.getIdUsuario());
+    }
+
+    /**
+     * borra una pregunta
+     *
+     */
+    public String borrarPregunta() {
+        try {
+            if (pregunta != null) {
+                ConexionBD.borrarBD(pregunta);
+            }
+            return "PantallaPrincipalIH.xhtml?faces-redirect=true";
+        } catch (Exception n) {
+            return "ErrorConexionIHF.xhtml?faces-redirect=true";
+        }
     }
 
     /**
      * Está contenida
+     *
      * @param a
      * @param ele
      * @return
@@ -79,35 +153,8 @@ public class ManejadorPregunta {
     }
 
     /**
-     * agrega una pregunta
-     * @return
-     */
-    public String agregarPregunta() {
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        String titulo = ec.getRequestParameterMap().get("form:titulo");
-        String descripcion = ec.getRequestParameterMap().get("form:descripcion");
-        String tNom = ec.getRequestParameterMap().get("form:tema");
-
-        if (descripcion.equals("") || titulo.equals("")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Se deben llenar ambos campos."));
-            return "";
-        }
-
-        //Agregamos pregunta, junto con su tema a la base de datos, 
-        pregunta = new Pregunta(0, descripcion, titulo, new Date());
-        for (Tema t : temas) {
-            if (t.getNombre().equals(tNom)) {
-                pregunta.setTema(t);
-            }
-        }
-        Usuario u = (Usuario) ec.getSessionMap().get("usuario");
-        pregunta.setIdUsuario(u);
-        pregunta.guardarBD();
-        return "PantallaPreguntaIH.xhtml?faces-redirect=true&pid=" + pregunta.getIdPregunta();
-    }
-
-    /**
      * va a la pregunta dado un id
+     *
      * @param id
      * @return
      */
@@ -117,6 +164,7 @@ public class ManejadorPregunta {
 
     /**
      * obtiene el id
+     *
      * @return
      */
     public String getId() {
@@ -128,46 +176,58 @@ public class ManejadorPregunta {
 
     /**
      * obtiene pregunta
+     *
      * @param id
      * @return
      */
     public Pregunta getPregunta(String id) {
-        if (id.equals("")) {
-            return null;
-        }
-        if (pregunta == null) {
-            try {
-                ConexionBD.conectarBD();
-                Query q = ConexionBD.consultarBD("Pregunta.findByIdPregunta");
-                q.setParameter("idPregunta", Integer.parseInt(id));
-                pregunta = (Pregunta) q.getSingleResult();
-            } catch (NoResultException e) {
+        try {
+            if (id.equals("")) {
                 return null;
             }
+            if (pregunta == null) {
+                try {
+                    ConexionBD.conectarBD();
+                    Query q = ConexionBD.consultarBD("Pregunta.findByIdPregunta");
+                    q.setParameter("idPregunta", Integer.parseInt(id));
+                    pregunta = (Pregunta) q.getSingleResult();
+                } catch (NoResultException e) {
+                    return null;
+                }
+            }
+            return pregunta;
+
+        } catch (Exception n) {
+            return null;
         }
-        return pregunta;
     }
 
     /**
      * regresa preguntas
+     *
      * @param tema
      * @return
      */
     public List<Pregunta> getPreguntas(String tema) {
-        List<Pregunta> preguntas;
-        ConexionBD.conectarBD();
-        Query q1 = ConexionBD.consultarBD("Pregunta.findByTema");
-        Query q2 = ConexionBD.consultarBD("Tema.findByNombre");
-        q2.setParameter("nombre", tema);
-        Tema t = (Tema) q2.getSingleResult();
-        q1.setParameter("tema", t);
-        preguntas = (List<Pregunta>) q1.getResultList();
+        try {
+            List<Pregunta> preguntas;
+            ConexionBD.conectarBD();
+            Query q1 = ConexionBD.consultarBD("Pregunta.findByTema");
+            Query q2 = ConexionBD.consultarBD("Tema.findByNombre");
+            q2.setParameter("nombre", tema);
+            Tema t = (Tema) q2.getSingleResult();
+            q1.setParameter("tema", t);
+            preguntas = (List<Pregunta>) q1.getResultList();
 
-        return preguntas;
+            return preguntas;
+        } catch (Exception n) {
+            return null;
+        }
     }
 
     /**
      * asi
+     *
      * @param str
      * @return
      */
@@ -191,39 +251,44 @@ public class ManejadorPregunta {
      * @return
      */
     public List<Pregunta> getPreguntasPorPalabras(String busqueda) {
-        busqueda = busqueda.toLowerCase();
-        busqueda = deAccent(busqueda);
+        try {
+            busqueda = deAccent(busqueda.toLowerCase());
 
-        String[] tmp = busqueda.split(" |\\+");
-        LinkedList<String> palabras = new LinkedList<String>();
-        LinkedList<String> palabrasFinal = new LinkedList<String>();
-        String[] nexpr = {"la", "el", "los", "las", "y", "tan", "pero", "que", "por", "cual", "donde", "es", "en", "un", "unos", "son", "porque"};
+            String[] tmp = busqueda.split(" |\\+");
+            LinkedList<String> palabras = new LinkedList<String>();
+            LinkedList<String> palabrasFinal = new LinkedList<String>();
+            String[] nexpr = {"la", "el", "los", "las", "y", "tan",
+                "pero", "que", "por", "cual", "donde",
+                "es", "en", "un", "unos", "son",
+                "porque", "a", "e", "u", "i", "o"};
 
-        for (int i = 0; i < tmp.length; i++) {
-            palabras.add(tmp[i].replaceAll("[^\\dA-Za-z]", ""));
-        }
-
-        for (String palabra : palabras) {
-            if (!estaContenida(nexpr, palabra)) {
-                palabrasFinal.add(palabra);
+            for (String tmp1 : tmp) {
+                palabras.add(tmp1.replaceAll("[^\\dA-Za-z]", ""));
             }
-        }
 
-        String[] temass = {"Horarios", "Inscripciones", "Servicio Social", "Titulación", "Posgrado", "Becas"};
-        List<Pregunta> preguntas = new LinkedList<>();
-        List<Pregunta> resultado = new LinkedList<>();
-
-        for (String tema : temass) {
-            preguntas.addAll(getPreguntas(tema));
-        }
-
-        for (Pregunta preguntap : preguntas) {
-            if (contienePalabras(preguntap, palabrasFinal)) {
-                resultado.add(preguntap);
+            for (String p : palabras) {
+                if (!p.equals(nexpr) && p.length() > 3) {
+                    palabrasFinal.add(p);
+                }
             }
+
+            List<Pregunta> resultado = new LinkedList<Pregunta>();
+            for (Tema t : getTemas()) {
+                for (Pregunta p : getPreguntas(t.getNombre())) {
+                    for (String s : palabrasFinal) {
+                        if (contienePalabras(s, p.getTitulo().split(" |\\+"))) {
+                            resultado.add(p);
+                        }
+                    }
+                }
+            }
+
+            return resultado;
+
+        } catch (Exception n) {
+            return null;
         }
 
-        return resultado;
     }
 
     /**
@@ -232,12 +297,11 @@ public class ManejadorPregunta {
      * @param palabras
      * @return
      */
-    public boolean contienePalabras(Pregunta pregunta, LinkedList<String> palabras) {
+    public boolean contienePalabras(String str, String[] palabras) {
         int contador = 0;
 
-        for (String palabra : palabras) {
-            if (deAccent(pregunta.getDescripcion().toLowerCase()).replaceAll("[^\\dA-Za-z]", " ").contains(palabra)
-                    || deAccent(pregunta.getTitulo().toLowerCase()).replaceAll("[^\\dA-Za-z]", " ").contains(palabra)) {
+        for (String p : palabras) {
+            if (str.equals(deAccent(p.toLowerCase()).replaceAll("[^\\dA-Za-z]", ""))) {
                 contador++;
             }
         }

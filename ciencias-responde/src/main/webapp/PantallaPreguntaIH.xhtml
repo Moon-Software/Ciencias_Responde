@@ -34,35 +34,38 @@ and open the template in the editor.
         </div>
 
         <div id="wrapper">
-            <c:choose>
-                <c:when test="#{preg != null}">
-                    <h2><h:outputText value="#{preg.titulo}"/></h2>
-                    <div id="content" style="margin:20px;">
-                        <h:panelGrid id="grid" columns="2" cellpadding="8">
-                            <h:panelGroup id="info" >
-                                <h:graphicImage value = "resources/icon.jpg" height="90px"/> 
-                                <br/>
-                                <h:outputText style="font-weight: bold; text-align: left;" value="#{preg.idUsuario.nombre}" />
-                            </h:panelGroup>
-                            <h:outputText value="#{preg.descripcion}"/>
-                        </h:panelGrid>
-                        <div align="right"><h:outputText value="#{preg.fecha}" /></div>
-                        <br/>
-                        <hr/>
-                        <br/>
-                        <h:form id="areacom">
 
-                            <ui:include src="ComentariosIH.xhtml" >
-                                <ui:param name="preg" value="#{preg}" />
-                            </ui:include>
+            <ui:include rendered="false" src="PreguntaBorradaIH.xhtml"/>
+            <h:panelGroup rendered="#{preg != null}">
+                <h2><h:outputText value="#{preg.titulo}"/></h2>
+                <div id="content" style="margin:20px;">
+                    <h:panelGrid id="grid" columns="2" cellpadding="8">
+                        <h:panelGroup id="info" >
+                            <h:graphicImage value = "resources/icon.jpg" height="90px"/> 
+                            <br/>
+                            <h:outputText style="font-weight: bold; text-align: left;" value="#{preg.idUsuario.nombre}" />
+                        </h:panelGroup>
+                        <h:outputText value="#{preg.descripcion}"/>
+                    </h:panelGrid>
+                    <div align="right">
+
+                        <h:form rendered="#{manejadorPregunta.esBorrable()}">
+                            <h:commandLink value="Remover" action="#{manejadorPregunta.borrarPregunta}"/>
                         </h:form>
-                    </div>
-                </c:when>
 
-                <c:otherwise>
-                    <ui:include src="PreguntaBorradaIH.xhtml"/>
-                </c:otherwise>
-            </c:choose>
+                        <h:outputText value="#{preg.fecha}" />
+                    </div>
+                    <br/>
+                    <hr/>
+                    <br/>
+
+                    <ui:include src="ComentariosIH.xhtml" >
+                        <ui:param name="preg" value="#{preg}" />
+                    </ui:include>
+
+                </div>
+            </h:panelGroup>
+
         </div>
 
         <div id="footer">

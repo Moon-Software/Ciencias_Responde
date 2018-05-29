@@ -18,13 +18,10 @@ and open the template in the editor.
     </h:head>
 
     <h:body id="comentarioBody">
-        <c:choose>
-            <c:when test="#{sesion.estaConectado()}">
-                <p:inputTextarea id="contenido" rows="6" cols="50" maxlength="1000" autoResize="false"  style="resize: none" />
-                <h:commandButton value = "OK" action="#{manejadorComentario.agregarComentario(preg)}" />
-            </c:when>
-        </c:choose>
-
+        <h:form id="areacom" rendered="#{sesion.estaConectado()}">
+            <p:inputTextarea id="contenido" rows="6" cols="50" maxlength="1000" autoResize="false"  style="resize: none" />
+            <h:commandButton value ="OK" action="#{manejadorComentario.agregarComentario(preg)}" />
+        </h:form>
         <c:choose>
             <c:when test="#{manejadorComentario.hayComentarios(preg)}">
                 <ui:repeat id="comentariosDis" value="#{manejadorComentario.getComentarios(preg)}" var="com"  >

@@ -51,6 +51,7 @@ public class Sesion {
      * @return
      */
     public String iniciarSesion() {
+        try{
         Usuario l = encuentraUsuario(usuario.getCorreo(), usuario.getContrasenia());
         boolean logged = l != null;
         if (logged) {
@@ -60,6 +61,9 @@ public class Sesion {
         }
 
         return "InicioSesionIH.xhtml?faces-redirect=true";
+        }catch(Exception n){
+            return "ErrorConexionIHF.xhtml?faces-redirect=true";
+        }
     }
 
     /**
@@ -67,10 +71,14 @@ public class Sesion {
      * @return
      */
     public String cerrarSesion() {
+        try{
         System.out.println("chingados");
         FacesContext context = getCurrentInstance();
         context.getExternalContext().invalidateSession();
         return "PantallaPrincipalIH.xhtml?faces-redirect=true";
+        }catch(Exception n){
+            return "ErrorConexionIHF.xhtml?faces-redirect=true";
+        }
     }
 
     /**
@@ -81,6 +89,7 @@ public class Sesion {
         FacesContext context = getCurrentInstance();
         Usuario l = (Usuario) context.getExternalContext().getSessionMap().get("usuario");
         return l != null;
+        
     }
 
     /**

@@ -49,7 +49,9 @@ class EmailUtil {
 
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
             Transport.send(msg);
-        } catch (UnsupportedEncodingException | MessagingException e) {
+        } catch (UnsupportedEncodingException a) {
+        } catch(MessagingException e){
+            
         }
     }
 }

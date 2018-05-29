@@ -101,32 +101,35 @@ public class UsuarioServicio {
      * @return
      */
     public String agregarUsuario() {
-
-        String respuesta = "";
-        Pattern correoVal = Pattern
-                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                        + "ciencias\\.unam\\.mx$");
-        Matcher mather = correoVal.matcher(correo);
-        if (contrasenia.length() >= 8) {
-            if (true == mather.find()) {
-                ConexionBD.conectarBD();
-                Query q = ConexionBD.consultarBD("Usuario.findByCorreo");
-                q.setParameter("correo", correo);
-                if (!q.getResultList().isEmpty()) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "El usuario ya existe."));
-                    return "";
+        try {
+            String respuesta = "";
+            Pattern correoVal = Pattern
+                    .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                            + "ciencias\\.unam\\.mx$");
+            Matcher mather = correoVal.matcher(correo);
+            if (contrasenia.length() >= 8) {
+                if (true == mather.find()) {
+                    ConexionBD.conectarBD();
+                    Query q = ConexionBD.consultarBD("Usuario.findByCorreo");
+                    q.setParameter("correo", correo);
+                    if (!q.getResultList().isEmpty()) {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "El usuario ya existe."));
+                        return "";
+                    }
+                    Usuario usr = new Usuario(0, correo, nombre, contrasenia, new Date(), false);
+                    Email em = new Email(correo, nombre, contrasenia);
+                    em.sendEmail();
+                    usr.guardarBD();
+                    respuesta = "RegistroExitosoIH.xhtml?faces-redirect=true";
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "El correo debe tener dominio @ciencias.unam.mx"));
                 }
-                Usuario usr = new Usuario(0, correo, nombre, contrasenia, new Date(), false);
-                Email em = new Email(correo, nombre, contrasenia);
-                em.sendEmail();
-                usr.guardarBD();
-                respuesta = "RegistroExitosoIH.xhtml?faces-redirect=true";
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "El correo debe tener dominio @ciencias.unam.mx"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "La contraseña de contener al menos 8 caracteres"));
             }
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "La contraseña de contener al menos 8 caracteres"));
+            return respuesta;
+        } catch (Exception n) {
+            return "ErrorConexionIHF.xhtml?faces-redirect=true";
         }
-        return respuesta;
     }
 }

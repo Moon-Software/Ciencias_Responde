@@ -12,7 +12,20 @@ and open the template in the editor.
       xmlns:p="http://primefaces.org/ui" 
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
+    <h:head>
+        <title>Inicio</title>
+        <h:outputStylesheet  library="css"  name="estilo.css" /> 
+    </h:head>
+
     <h:body>
+        <div id="header">
+            <div id="name">
+                <h:outputLink value="PantallaPrincipalIH.xhtml">
+                    <h:graphicImage value = "resources/logo.svg" height="95px"/> 
+                </h:outputLink>
+            </div>
+        </div>
+
         <h:outputText value="¡ERROR DE CONEXIÓN! Compruebe su conexión a internet e 
                       inténtelo más tarde. Pueden haber problemas con la conexión a la base de datos." />
     </h:body>

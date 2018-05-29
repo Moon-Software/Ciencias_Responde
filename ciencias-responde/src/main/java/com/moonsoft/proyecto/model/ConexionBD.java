@@ -27,42 +27,43 @@ public class ConexionBD {
     private ConexionBD() {
     }
 
-    public static EntityManager conectarBD() {
+    public static void conectarBD() {
         try {
-            if (em == null) {
+            if (emf == null) {
                 emf = Persistence.createEntityManagerFactory("APP1PU");
-                em = emf.createEntityManager();
             }
-        } catch (PersistenceException pe) {
-
-        }
-        return em;
+        } catch (PersistenceException pe) {}
     }
 
     public static void desconectarBD() {
-        if (em != null) {
-            em.close();
+        if (emf != null) {
+            emf.close();
         }
     }
 
     public static void insertarBD(Object o) {
+        EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(o);
         em.getTransaction().commit();
+        em.close();
     }
 
     public static void actualizarBD() {
 
     }
 
-    public static void borrarBD() {
-
+    public static void borrarBD(Object o) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        Object o2 = em.merge(o);
+        em.remove(o);
+        em.getTransaction().commit();
+        em.close();
     }
 
     public static Query consultarBD(String q) {
-        if (em == null) {
-            return null;
-        }
+        EntityManager em = emf.createEntityManager();
         return em.createNamedQuery(q);
     }
 

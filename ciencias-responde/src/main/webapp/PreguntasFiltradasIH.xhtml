@@ -11,10 +11,12 @@ and open the template in the editor.
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <c:set var="pregs" value="#{manejadorPregunta.getPreguntasPorPalabras(param.search)}"/>
+
     <h:head>
         <title><h:outputText value="Preguntas Filtradas: " /></title>
         <h:outputStylesheet library="css" name="estilo.css"/>
     </h:head>
+
     <h:body>
         <div id="header">
             <div id="name">
@@ -27,29 +29,33 @@ and open the template in the editor.
             </div>
         </div>
         <c:choose>
-            <c:when test="#{!pregs.isEmpty()}">
-                <p:dataScroller value="#{pregs}" var="preg" chunkSize="10">
-
-                    <h:panelGrid columns="2" style="width:100%">
-
-                        <p:outputPanel>
-                            <h:panelGrid columns="2" cellpadding="5">
-                                <h:outputLink value="PantallaPreguntaIH.xhtml?pid=#{preg.idPregunta}">
-                                    <br/>
-                                    <h:outputText value="#{preg.titulo}" style="font-weight: bold"/>
-                                    <br/>
-                                </h:outputLink>
-                            </h:panelGrid>
-                            <hr />
-                        </p:outputPanel>
-                    </h:panelGrid>
-                </p:dataScroller>
+            <c:when test="#{pregs == null}">
+                <ui:include src="ErrorConexionIH.xhtml" />
             </c:when>
-
             <c:otherwise>
-                <div class ="my-2 my-lg-0">
-                    <h:outputText value="¡NO SE HA ENCONTRADO NINGUNA PREGUNTA RELACIONADA A TU BÚSQUEDA. Haz la pregunta o intenta con otra búsqueda." style="font-weight: bold"/>
-                </div>
+                <c:choose>
+                    <c:when test="#{pregs.isEmpty()}">
+                        <h:outputText value="¡NO SE HA ENCONTRADO NINGUNA PREGUNTA RELACIONADA A TU BÚSQUEDA. Haz la pregunta o intenta con otra búsqueda." style="font-weight: bold"/>
+                    </c:when>
+                    <c:otherwise>
+                        <p:dataScroller value="#{pregs}" var="preg" chunkSize="10">
+
+                            <h:panelGrid columns="2" style="width:100%">
+
+                                <p:outputPanel>
+                                    <h:panelGrid columns="2" cellpadding="5">
+                                        <h:outputLink value="PantallaPreguntaIH.xhtml?pid=#{preg.idPregunta}">
+                                            <br/>
+                                            <h:outputText value="#{preg.titulo}" style="font-weight: bold"/>
+                                            <br/>
+                                        </h:outputLink>
+                                    </h:panelGrid>
+                                    <hr />
+                                </p:outputPanel>
+                            </h:panelGrid>
+                        </p:dataScroller>
+                    </c:otherwise>
+                </c:choose>
             </c:otherwise>
         </c:choose>
     </h:body>
