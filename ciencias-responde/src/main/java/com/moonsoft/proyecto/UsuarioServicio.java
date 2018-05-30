@@ -19,6 +19,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.Query;
 import org.primefaces.model.UploadedFile;
 import static org.apache.commons.codec.binary.Base64.encodeBase64;
@@ -85,10 +88,10 @@ public class UsuarioServicio {
     public void fileUploadListener(FileUploadEvent e) {
         this.file = e.getFile();
     }
-    
+
     /**
      * Método que se agrega un usuario a la base de datos.
-     * 
+     *
      * @return enlace
      */
     public String agregarUsuario() throws Exception {
@@ -113,15 +116,16 @@ public class UsuarioServicio {
 
                     if (file != null) {
                         if (file.getContents() == null) {
-                            System.out.println("Diego es dios");
+                            System.out.println("jeje");
                         }
                         usr.setFoto(file.getContents());
                     } else {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "La imagen no debe ser vacioa"));
                     }
                     Email em = new Email(correo, nombre, contrasenia);
-                    em.sendEmail();
                     usr.guardarBD();
+                    em.sendEmail(usr.getIdUsuario());
+
                     respuesta = "RegistroExitosoIH.xhtml?faces-redirect=true";
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "El correo debe tener dominio @ciencias.unam.mx"));
@@ -135,6 +139,36 @@ public class UsuarioServicio {
         }
     }
     
+    /**
+     * Método que se encarga de verificar a un usuario.
+     *
+     * @param id el id del usuario.
+     * @return si está verificado o no un usuario
+     */
+    public boolean validarUsuario(String id) {
+        try {
+            ConexionBD.conectarBD();
+            
+            //Usuario u = (Usuario) q.getSingleResult();
+            
+            
+            
+            EntityManagerFactory emf = ConexionBD.conectarBD();
+            EntityManager em = emf.createEntityManager();
+            
+            Usuario u = em.find(Usuario.class, Integer.parseInt(id));
+            boolean res =  u.getSesion();
+            em.getTransaction().begin();
+            u.setSesion(true);
+            em.getTransaction().commit();
+            
+            return !(res);
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            return true;
+        }
+    }
+
     /**
      * Método que se encarga de cifrar una contrasenia.
      *

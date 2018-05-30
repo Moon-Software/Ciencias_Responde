@@ -21,7 +21,6 @@ import org.primefaces.push.annotation.Singleton;
 public class ConexionBD {
 
     @PersistenceContext
-    private static EntityManager em;
     private static EntityManagerFactory emf;
 
     private ConexionBD() {
@@ -32,13 +31,14 @@ public class ConexionBD {
      *
      * @return no
      */
-    public static void conectarBD() {
+    public static EntityManagerFactory conectarBD() {
         try {
             if (emf == null) {
                 emf = Persistence.createEntityManagerFactory("APP1PU");
             }
         } catch (PersistenceException pe) {
         }
+        return emf;
     }
 
     /**

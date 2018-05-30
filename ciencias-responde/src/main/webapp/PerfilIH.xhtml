@@ -51,7 +51,7 @@ and open the template in the editor.
                         <c:otherwise>
 
                             <p:messages id="messages" showDetail="true" closable="true" autoUpdate="true" ></p:messages>
-                            <h:panelGrid id="grid" columns="2" cellpadding="5">
+                            <h:panelGrid id="grid" columns="2" cellpadding="5" >
 
                                 <c:if test="#{usr != null}">
                                     <p:outputLabel value="Nombre:" />
@@ -60,7 +60,7 @@ and open the template in the editor.
                                     <p:outputLabel value="Fecha de registro:" />
                                     <p:outputLabel value="${manejadorPerfil.dateToString()}"/>
                                 </c:if>   
-                                <h:form id="eliminar" rendered="#{manejadorPerfil.esBorrable()}">
+                                <h:form id="eliminar" rendered="#{manejadorPerfil.esBorrable(param.uid)}">
                                     <h:commandButton value="Eliminar usuario" action="#{manejadorPerfil.borrarUsuario2()}"/>
                                 </h:form>
 

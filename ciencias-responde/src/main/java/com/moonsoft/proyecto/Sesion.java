@@ -58,6 +58,10 @@ public class Sesion {
             Usuario l = encuentraUsuario(usuario.getCorreo(), usuario.getContrasenia());
             boolean logged = l != null;
             if (logged) {
+                if (!l.getSesion()) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "El usuario no ha sido validado."));
+                    return "";
+                }
                 FacesContext context = getCurrentInstance();
                 context.getExternalContext().getSessionMap().put("usuario", l);
                 return "PantallaPrincipalIH.xhtml?faces-redirect=true";

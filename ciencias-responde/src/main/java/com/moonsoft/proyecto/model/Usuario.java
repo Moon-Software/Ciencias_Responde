@@ -91,6 +91,7 @@ public class Usuario implements Serializable {
         this.contrasenia = contrasenia;
         this.fRegistro = fRegistro;
         this.esAdmin = esAdmin;
+        this.sesion = false;
     }
 
     public Integer getIdUsuario() {

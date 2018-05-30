@@ -115,10 +115,16 @@ public class ManejadorPerfil {
         }
     }
     
-    public boolean esBorrable(){
+    /**
+     * Método que se encarga de decir si un usuario es borrable.
+     * 
+     * @return enlace
+     */
+    public boolean esBorrable(String id){
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         Usuario us = (Usuario) ec.getSessionMap().get("usuario");
-        if(us == null){
+        Usuario o = getUsuario(id);
+        if(us == null || o == null){
             return false;
         }
         if(us.getEsAdmin()){
@@ -135,4 +141,5 @@ public class ManejadorPerfil {
         DateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
         return fecha.format(usr.getFRegistro());
     }
+   
 }

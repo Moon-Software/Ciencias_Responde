@@ -42,8 +42,7 @@ public class Email {
     /**
      * Método para enviar correo.
      */
-    public void sendEmail() {
-        System.out.println("SSLEmail Start");
+    public void sendEmail(Integer uid) {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
         props.put("mail.smtp.socketFactory.port", "465"); //SSL Port
@@ -61,10 +60,12 @@ public class Email {
         };
 
         Session session = Session.getDefaultInstance(props, auth);
-        System.out.println("Session created");
+        
+        
 
         EmailUtil.sendEmail(session, toEmail, "Creacion de cuenta", 
-                "Gracias "+ nombre +" por registrarte en CienciasResponde\n");
+                "Gracias "+ nombre +" por registrarte en CienciasResponde."
+                        + "Confirme aqui:"+" http://localhost:8084/ciencias-responde/ValidarIH.xhtml?u="+uid);
 
     }
 
