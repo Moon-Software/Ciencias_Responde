@@ -7,6 +7,8 @@ package com.moonsoft.proyecto;
 
 import com.moonsoft.proyecto.model.ConexionBD;
 import com.moonsoft.proyecto.model.Usuario;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
@@ -97,12 +99,40 @@ public class ManejadorPerfil {
      * 
      * @return enlace
      */
-    public String borrarUsuario() {
+    public String borrarUsuario2() {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        Usuario us = (Usuario) ec.getSessionMap().get("usuario");
         try{
-        usr.eliminarBD();
-        return "PantallaPrincipalIH.xhtml?faces-redirect=true";
+            if(usr.getIdUsuario() == us.getIdUsuario()){
+                Sesion.cerrarSesion();
+                usr.eliminarBD();
+            }else{
+                usr.eliminarBD();
+            }
+            return "PantallaPrincipalIH.xhtml?faces-redirect=true";
         }catch(Exception n){
             return "ErrorConexionIH.xhtml?faces-redirect=true";
         }
+    }
+    
+    public boolean esBorrable(){
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        Usuario us = (Usuario) ec.getSessionMap().get("usuario");
+        if(us == null){
+            return false;
+        }
+        if(us.getEsAdmin()){
+            return true;
+        }
+        return usr.getIdUsuario().equals(us.getIdUsuario());
+    }
+    
+    /**
+     * Metodo que se encarga de convertir algo de tipo Date a String
+     * @return fecha
+     */
+    public String dateToString(){
+        DateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
+        return fecha.format(usr.getFRegistro());
     }
 }

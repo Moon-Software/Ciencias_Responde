@@ -30,35 +30,40 @@ and open the template in the editor.
             <h2> Perfil </h2>
             <div id="content">
                 <h:form enctype="multipart/form-data" id="form">
+
+                    <c:if test="#{usr == null}">
+                        <h:outputText value="El usuario no existe." />
+                    </c:if>
+
                     <c:choose>
-                        <c:when test="#{usr == null}">
-                            <h:outputText value="¡ERROR DE CONEXIÓN! Compruebe su conexión a internet e 
-                                          inténtelo más tarde. Pueden haber problemas con la conexión a la base de datos." />
+                        <c:when test ="#{!sesion.estaConectado()}">
+                            <h:panelGrid id="grid" columns="2" cellpadding="5">
+                                <c:if test="#{usr != null}">
+                                    <p:outputLabel value="Nombre:" />
+                                    <p:outputLabel value="#{usr.nombre}"/>  
+
+                                    <p:outputLabel value="Fecha de registro:" />
+                                    <p:outputLabel value="${manejadorPerfil.dateToString()}"/>
+                                </c:if>   
+
+                            </h:panelGrid>
                         </c:when>
                         <c:otherwise>
+
                             <p:messages id="messages" showDetail="true" closable="true" autoUpdate="true" ></p:messages>
                             <h:panelGrid id="grid" columns="2" cellpadding="5">
-                                <p:outputLabel value="Nombre:" />
-                                <p:outputLabel value="#{usr.nombre}"/>  
-                                <p:outputLabel value="Correo:" />
-                                <c:set var="correo" value="#{usr.correo}"/>
-                                <p:outputLabel value="${correo}"/>
-                                <c:choose>
-                                    <c:when test="#{manejadorPerfil.esAdmin()}">
-                                        <div class ="my-2 my-lg-0">
-                                            <h:form id="eliminar">
-                                                <h:commandButton value="Eliminar usuario" action="#{manejadorPerfil.borrarUsuario()}"/>
-                                            </h:form>
-                                        </div>
-                                    </c:when>
-                                    <c:when test="#{usr.idUsuario == manejadorPerfil.idActivo()}">
-                                        <div class ="my-2 my-lg-0">
-                                            <h:form id="eliminar">
-                                                <h:commandButton value="Eliminar usuario" action="#{manejadorPerfil.borrarUsuario()}"/>
-                                            </h:form>
-                                        </div>
-                                    </c:when>
-                                </c:choose>
+
+                                <c:if test="#{usr != null}">
+                                    <p:outputLabel value="Nombre:" />
+                                    <p:outputLabel value="#{usr.nombre}"/>  
+
+                                    <p:outputLabel value="Fecha de registro:" />
+                                    <p:outputLabel value="${manejadorPerfil.dateToString()}"/>
+                                </c:if>   
+                                <h:form id="eliminar" rendered="#{manejadorPerfil.esBorrable()}">
+                                    <h:commandButton value="Eliminar usuario" action="#{manejadorPerfil.borrarUsuario2()}"/>
+                                </h:form>
+
                             </h:panelGrid>
                         </c:otherwise>
                     </c:choose>

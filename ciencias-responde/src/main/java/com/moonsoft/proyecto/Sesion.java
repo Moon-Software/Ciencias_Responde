@@ -76,7 +76,7 @@ public class Sesion {
      *
      * @return pantalla_principal
      */
-    public String cerrarSesion() {
+    public static String cerrarSesion() {
         try {
             FacesContext context = getCurrentInstance();
             context.getExternalContext().invalidateSession();
