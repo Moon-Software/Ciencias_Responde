@@ -7,8 +7,8 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3c.org/1999/xhtml" 
-      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -33,17 +33,20 @@ and open the template in the editor.
             <h2>Inicio Sesión</h2>
             <div id="content" style="margin:20px;">
                 <h:form id="myfForm" class="form-inline my-2 my-lg-0">
+                    <p:messages id="messages" showDetail="true" closable="true" autoUpdate="true" ></p:messages>
                     <h:inputText value="#{sesion.usuario.correo}"
                              required="true" id="Username"
                              size="15" class="form-control mr-sm-2"
-                             a:placeholder="Correo Electrónico"/>
+                             a:placeholder="Correo Electrónico" 
+                             requiredMessage="El correo es obligatorio." styleClass="textbox"/>
                     <p:spacer width="10"></p:spacer>
                     <h:inputSecret value="#{sesion.usuario.contrasenia}"
                                required="true" id="Password"
                                class="form-control mr-sm-2"
-                               a:placeholder="Contraseña"/>
+                               a:placeholder="Contraseña" 
+                               requiredMessage="La contraseña es obligatoria." styleClass="textbox"/>
                     <p:spacer width="10"></p:spacer>
-                    <h:commandButton action="#{sesion.iniciarSesion}" value="Acceder"/>
+                    <h:commandButton action="#{sesion.iniciarSesion}" value="Acceder" styleClass="button"/>
 
                 </h:form>
             </div>

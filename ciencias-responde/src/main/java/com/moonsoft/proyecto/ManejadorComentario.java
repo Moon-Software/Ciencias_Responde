@@ -11,11 +11,13 @@ import com.moonsoft.proyecto.model.Pregunta;
 import com.moonsoft.proyecto.model.Usuario;
 import java.util.Date;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import static javax.faces.context.FacesContext.getCurrentInstance;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 /**
@@ -42,7 +44,8 @@ public class ManejadorComentario {
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
             Usuario u = (Usuario) ec.getSessionMap().get("usuario");
             String contenido = ec.getRequestParameterMap().get("areacom:contenido");
-
+            
+            
             //Agregamos pregunta, junto con su tema a la base de datos, 
             Comentario c = new Comentario(0, contenido, 0, new Date());
             c.setIdPregunta(p);
@@ -51,7 +54,7 @@ public class ManejadorComentario {
             ConexionBD.insertarBD(c);
             return "PantallaPreguntaIH.xhtml?faces-redirect=true&amp;pid=" + p.getIdPregunta();
         } catch (Exception n) {
-            return "ErrorConexionIHF.xhtml?faces-redirect=true";
+            return "ErrorConexionIH.xhtml?faces-redirect=true";
         }
     }
 
@@ -119,13 +122,26 @@ public class ManejadorComentario {
         try {
             String pid = c.getIdPregunta().getIdPregunta().toString();
             if (c != null) {
+                Query q = ConexionBD.consultarBD("Comentario.findByIdComentario");
+                q.setParameter("idComentario", c.getIdComentario());
+                try {
+                    c = (Comentario) q.getSingleResult();
+                } catch (NoResultException e) {
+                    FacesContext.getCurrentInstance().addMessage("avisos:aviso", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error! El comentario ya fue eliminado.", "" ));
+                    FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+                    return "PantallaPreguntaIH.xhtml?faces-redirect=true&amp;pid=" + pid;
+                }
+
                 ConexionBD.borrarBD(c);
             }else{
-                return "ErrorConexionIHF.xhtml?faces-redirect=true";
+                return "ErrorConexionIH.xhtml?faces-redirect=true";
             }
+            
+            FacesContext.getCurrentInstance().addMessage("avisos:aviso", new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito! Se eliminó el comentario", "" ));
+            FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
             return "PantallaPreguntaIH.xhtml?faces-redirect=true&amp;pid=" + pid;
         } catch (Exception n) {
-            return "ErrorConexionIHF.xhtml?faces-redirect=true";
+            return "ErrorConexionIH.xhtml?faces-redirect=true";
         }
     }
 }

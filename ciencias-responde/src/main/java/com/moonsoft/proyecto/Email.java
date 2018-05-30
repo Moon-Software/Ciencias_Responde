@@ -64,9 +64,7 @@ public class Email {
         System.out.println("Session created");
 
         EmailUtil.sendEmail(session, toEmail, "Creacion de cuenta", 
-                "Gracias por registrarte en CienciasResponde\n"
-                + "Tu nombre es: " + nombre + "\n"
-                + "Tu contraseña es: " + contrasenia);
+                "Gracias "+ nombre +" por registrarte en CienciasResponde\n");
 
     }
 

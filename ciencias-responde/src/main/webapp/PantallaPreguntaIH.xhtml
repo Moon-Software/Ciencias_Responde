@@ -7,8 +7,8 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3c.org/1999/xhtml" 
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets" 
@@ -40,24 +40,29 @@ and open the template in the editor.
                 </c:when> 
                 <c:otherwise>   
                     <h2><h:outputText value="#{preg.titulo}"/></h2>
-                    <div id="content" style="margin:20px;">
-                        <h:panelGrid rendered="#{preg != null}" id="grid" columns="2" cellpadding="8">
-                            <h:panelGroup id="info" >
+                    <div id="content">
+                        <h:panelGrid  rendered="#{preg != null}" id="grid" columns="2" cellpadding="8"
+                                     style="font-size: 20px;">
+                            <h:panelGroup layout="block" id="info" >
                                 <h:graphicImage value = "resources/icon.jpg" height="90px"/> 
                                 <br/>
-                                <h:link style="font-weight: bold; text-align: left;" value="#{preg.idUsuario.nombre}" 
-                                        outcome="PerfilIH.xhtml?uid=#{preg.idUsuario.idUsuario}"/>
+                                <h:link value="#{preg.idUsuario.nombre}" 
+                                        outcome="PerfilIH.xhtml?uid=#{preg.idUsuario.idUsuario}" styleClass="link"/>
                             </h:panelGroup>
-                            <h:outputText value="#{preg.descripcion}"/>
+                            <h:panelGroup layout="block" id="cont" style="margin: 0px;white-space: pre-wrap">
+                                <h:outputText value="#{preg.descripcion}"/>
+                            </h:panelGroup>
                         </h:panelGrid>
                         <h:panelGroup rendered="#{preg != null}" layout="block" style="text-align:right">
                             <h:form rendered="#{manejadorPregunta.esBorrable()}">
-                                <h:commandLink value="Remover" action="#{manejadorPregunta.borrarPregunta}"/>
+                                <h:commandLink value="Remover" action="#{manejadorPregunta.borrarPregunta}" style="color: #FF6e63"/>
                             </h:form>
                             <h:outputText value="#{preg.fecha}" />
                         </h:panelGroup>
-                        <h:panelGroup rendered="#{preg != null}" layout="block">
-                            <br/><hr/><br/>
+                        <h:panelGroup rendered="#{preg != null}" layout="block" style="text-align: center;">
+                            <br/><hr/>
+                            comentarios
+                            <br/>
 
                             <ui:include src="ComentariosIH.xhtml" >
                                 <ui:param name="pr" value="#{manejadorPregunta.getPregunta(param.pid)}" />

@@ -11,7 +11,7 @@ and open the template in the editor.
       xmlns:h="http://xmlns.jcp.org/jsf/html" 
       xmlns:p="http://primefaces.org/ui" 
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:head>
         <title><h:outputText value="Preguntas de #{param.tid}" /></title>
@@ -32,41 +32,47 @@ and open the template in the editor.
         </div>
 
         <div id="wrapper">
-            <div id="content">
-                <c:choose>
-                    <c:when test="#{manejadorPregunta.getPreguntas(param.tid) == null}">
-                        <h:outputText value="¡ERROR DE CONEXIÓN! Compruebe su conexión a internet e 
+
+            <c:choose>
+
+                <c:when test="#{manejadorPregunta.getPreguntas(param.tid) == null}">
+                    <h2>¡ERROR DE CONEXIÓN!</h2>
+                    <div id="content">
+                        <h:outputText value="Compruebe su conexión a internet e 
                                       inténtelo más tarde. Pueden haber problemas con la conexión a la base de datos." />
-                    </c:when>
-                    <c:otherwise>
-                        <h:outputText value="Preguntas filtradas por el tema: #{param.tid}" />
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <h2><h:outputText value="Preguntas sobre: #{param.tid}" /></h2>
+                    <div id="content">
                         <c:choose>
                             <c:when test="#{sesion.estaConectado()}">
-                                <h:button outcome="PreguntaNuevaIH.xhtml" value="Crear nueva pregunta" />
+                                <h:button outcome="PreguntaNuevaIH.xhtml" value="Crear nueva pregunta" styleClass="buttonnew"/>
                             </c:when>
                         </c:choose>
 
-                        <h:form> 
+                        <h:form>
                             <p:dataScroller value="#{manejadorPregunta.getPreguntas(param.tid)}" var="preg" chunkSize="10">
-
-                                <h:panelGrid columns="2" style="width:100%">
-
-                                    <p:outputPanel>
-                                        <h:panelGrid columns="2" cellpadding="5">
-                                            <h:outputLink value="PantallaPreguntaIH.xhtml?pid=#{preg.idPregunta}">
-                                                <br/>
-                                                <h:outputText value="#{preg.titulo}" style="font-weight: bold"/>
-                                                <br/>
-                                            </h:outputLink>
-                                        </h:panelGrid>
-                                        <hr />
-                                    </p:outputPanel>
-                                </h:panelGrid>
+                                
+                                <f:facet name="loader">
+                                    <p:commandButton type="button" value="Más" icon="ui-icon-circle-triangle-s"/>
+                                </f:facet>
+                                
+                                <p:outputPanel>
+                                    <h:panelGrid>
+                                        <h:outputLink value="PantallaPreguntaIH.xhtml?pid=#{preg.idPregunta}" styleClass="link">
+                                            <br/>
+                                            <h:outputText value="#{preg.titulo}" styleClass="link"/>
+                                            <br/><br/>
+                                        </h:outputLink>
+                                    </h:panelGrid>
+                                </p:outputPanel>
+                                
                             </p:dataScroller>
                         </h:form>
-                    </c:otherwise>
-                </c:choose>
-            </div>
+                    </div>
+                </c:otherwise>
+            </c:choose>
         </div>
 
         <div id="footer">

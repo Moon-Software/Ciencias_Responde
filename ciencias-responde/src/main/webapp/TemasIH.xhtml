@@ -7,8 +7,8 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3c.org/1999/xhtml" 
-      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui" 
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
@@ -21,19 +21,19 @@ and open the template in the editor.
             <c:choose>
                 <c:when test="#{manejadorPregunta.getTemas() == null}">
                     <h:outputText value="¡ERROR DE CONEXIÓN! Compruebe su conexión a internet e 
-                      inténtelo más tarde. Pueden haber problemas con la conexión a la base de datos." />
+                                  inténtelo más tarde. Pueden haber problemas con la conexión a la base de datos." />
                 </c:when>
                 <c:otherwise>
                     <h:form>
-                        <p:accordionPanel value="#{manejadorPregunta.getTemas()}" var="tema">
-                            <p:tab title="#{tema.nombre}">
-                                <h:panelGrid columns="2" cellpadding="5">
-                                    <h:outputText value="DESCRIPCIÓN: " style="font-weight: bold" />
-                                    <h:outputText value="#{tema.descripcion}" />
-                                    <a href="PreguntasDeTemaIH.xhtml?tid=#{tema.nombre}"> Ir a preguntas asociadas al tema.</a>
-                                </h:panelGrid>
-                            </p:tab>
-                        </p:accordionPanel>
+                        <p:messages id="messages" closable="true" autoUpdate="true" ></p:messages>
+                        <ui:repeat value="#{manejadorPregunta.getTemas()}" var="tema">
+                            <h:panelGrid style="padding: 10px; margin: 0px; background-color: #AAE177; border: 2px solid #629749; width: 100%">
+                                <h:outputLink value="PreguntasDeTemaIH.xhtml?tid=#{tema.nombre}" styleClass="link">
+                                    <h:outputText value="#{tema.nombre}" styleClass="link"/>
+                                </h:outputLink>
+                            </h:panelGrid>    
+                            <h:outputText value="DESCRIPCIÓN: #{tema.descripcion}" style="font-weight: bold" />                               
+                        </ui:repeat>
                     </h:form>
                 </c:otherwise>
             </c:choose>

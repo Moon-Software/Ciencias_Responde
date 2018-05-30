@@ -8,7 +8,8 @@ and open the template in the editor.
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <c:set var="pregs" value="#{manejadorPregunta.getPreguntasPorPalabras(param.search)}"/>
 
@@ -28,36 +29,51 @@ and open the template in the editor.
                 </div>
             </div>
         </div>
-        <c:choose>
-            <c:when test="#{pregs == null}">
-                <h:outputText value="¡ERROR DE CONEXIÓN! Compruebe su conexión a internet e 
-                      inténtelo más tarde. Pueden haber problemas con la conexión a la base de datos." />
-            </c:when>
-            <c:otherwise>
-                <c:choose>
-                    <c:when test="#{pregs.isEmpty()}">
-                        <h:outputText value="¡NO SE HA ENCONTRADO NINGUNA PREGUNTA RELACIONADA A TU BÚSQUEDA. Haz la pregunta o intenta con otra búsqueda." style="font-weight: bold"/>
-                    </c:when>
-                    <c:otherwise>
-                        <p:dataScroller value="#{pregs}" var="preg" chunkSize="10">
 
-                            <h:panelGrid columns="2" style="width:100%">
+        <div id="wrapper">
+
+            <c:choose>
+
+                <c:when test="#{pregs == null}">
+                    <h2>¡ERROR DE CONEXIÓN!</h2>
+                    <div id="content">
+                        <h:outputText value="Compruebe su conexión a internet e 
+                                      inténtelo más tarde. Pueden haber problemas con la conexión a la base de datos." />
+                    </div>
+                </c:when>
+                <c:when test="#{pregs.isEmpty()}">
+                    <h2>Busqueda Vacía</h2>
+                    <div id="content">
+                        <h:outputText value="NO SE HA ENCONTRADO NINGUNA PREGUNTA RELACIONADA A TU BÚSQUEDA. 
+                                      Crea la pregunta o intenta con otra búsqueda." />
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <h2><h:outputText value="Resultados de: #{param.search}" /></h2>
+                    <div id="content">
+
+                        <h:form>
+                            <p:dataScroller value="#{pregs}" var="preg" chunkSize="10">
+
+                                <f:facet name="loader">
+                                    <p:commandButton type="button" value="Más" icon="ui-icon-circle-triangle-s"/>
+                                </f:facet>
 
                                 <p:outputPanel>
-                                    <h:panelGrid columns="2" cellpadding="5">
-                                        <h:outputLink value="PantallaPreguntaIH.xhtml?pid=#{preg.idPregunta}">
+                                    <h:panelGrid>
+                                        <h:outputLink value="PantallaPreguntaIH.xhtml?pid=#{preg.idPregunta}" styleClass="link">
                                             <br/>
-                                            <h:outputText value="#{preg.titulo}" style="font-weight: bold"/>
-                                            <br/>
+                                            <h:outputText value="#{preg.titulo}" styleClass="link"/>
+                                            <br/><br/>
                                         </h:outputLink>
                                     </h:panelGrid>
-                                    <hr />
                                 </p:outputPanel>
-                            </h:panelGrid>
-                        </p:dataScroller>
-                    </c:otherwise>
-                </c:choose>
-            </c:otherwise>
-        </c:choose>
+
+                            </p:dataScroller>
+                        </h:form>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </div>
     </h:body>
 </html>

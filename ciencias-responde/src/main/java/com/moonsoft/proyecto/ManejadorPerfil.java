@@ -102,7 +102,7 @@ public class ManejadorPerfil {
         usr.eliminarBD();
         return "PantallaPrincipalIH.xhtml?faces-redirect=true";
         }catch(Exception n){
-            return "ErrorConexionIHF.xhtml?faces-redirect=true";
+            return "ErrorConexionIH.xhtml?faces-redirect=true";
         }
     }
 }

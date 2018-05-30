@@ -7,8 +7,8 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3c.org/1999/xhtml" 
-      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui" 
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core">
@@ -18,28 +18,32 @@ and open the template in the editor.
     </h:head>
 
     <h:body id="comentarioBody">
- 
+                
                 <h:form id="areacom" rendered="#{sesion.estaConectado()}">
-                    <p:inputTextarea id="contenido" rows="6" cols="50" maxlength="1000" autoResize="false"  style="resize: none" />
-                    <h:commandButton value ="OK" action="#{manejadorComentario.agregarComentario(manejadorPregunta.getPregunta(null))}" />
+                    <p:messages id="messages" closable="true" ></p:messages>
+                    <p:inputTextarea id="contenido" required="true" requiredMessage="Ojo, Se debe llenar antes de comentar." 
+                                     rows="6" cols="50" maxlength="1000" autoResize="true"  />
+                    <h:commandButton value ="OK"  action="#{manejadorComentario.agregarComentario(manejadorPregunta.getPregunta(null))}" />
                 </h:form>
 
                 <c:choose>
                     <c:when test="#{manejadorComentario.hayComentarios(pr)}">
                         <ui:repeat id="comentariosDis" value="#{manejadorComentario.getComentarios(pr)}" var="com"  >
                             <div  id="comentario">
-                                <h:panelGrid style="width:100%" id="grid" columns="2"  bgcolor="#bcaaa4" cellpadding="2">
+                                <h:panelGrid  id="grid" columns="2" cellpadding="2">
                                     <h:panelGroup id="info" style="width:20%">
                                         <div align="center">
+                                            <h:link style="font-weight: bold; text-align: center;" value="#{com.idUsuario.nombre}" 
+                                                          outcome="PerfilIH.xhtml?uid=#{com.idUsuario.idUsuario}" styleClass="link"/>
+                                            <br/>
                                             <h:graphicImage value = "resources/icon.jpg" height="70px"/> 
                                             <br/>
-                                            <h:outputText style="font-weight: bold; text-align: center;" value="#{com.idUsuario.nombre}" />
                                             <h:form rendered="#{manejadorComentario.esBorrable(com)}">
-                                                <h:commandLink value="Remover" action="#{manejadorComentario.borrarComentario(com)}"/>
+                                                <h:commandLink value="Remover" action="#{manejadorComentario.borrarComentario(com)}" style="color: #FF6e63"/>
                                             </h:form>
                                         </div>
                                     </h:panelGroup>
-                                    <h:outputText value="#{com.contenido}" />
+                                    <h:outputText value="#{com.contenido}" style="font-size: 20px;"/>
                                 </h:panelGrid>
                             </div>
                         </ui:repeat>

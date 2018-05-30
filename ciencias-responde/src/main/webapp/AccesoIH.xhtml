@@ -7,8 +7,8 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3c.org/1999/xhtml" 
-      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui" 
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core">
@@ -23,18 +23,18 @@ and open the template in the editor.
             <c:when test="#{sesion.estaConectado()}">
                 <div class ="my-2 my-lg-0">
                     <h:form id="perfil">
-                        <h:button value="Perfil" outcome = "PerfilIH.xhtml?uid=#{manejadorPerfil.idActivo()}"/>
+                        <h:button value="Perfil" outcome = "PerfilIH.xhtml?uid=#{manejadorPerfil.idActivo()}" styleClass="button"/>
                         <p:spacer width="10"></p:spacer>
-                        <h:commandButton action="#{sesion.cerrarSesion()}" value="Cerrar Sesión"/>
+                        <h:commandButton action="#{sesion.cerrarSesion()}" value="Cerrar Sesión" styleClass="button"/>
                     </h:form>
                 </div>
             </c:when>
 
             <c:otherwise>
                 <h:form id="myForm" class="form-inline my-2 my-lg-0">
-                    <h:button value="Iniciar Sesion" outcome="InicioSesionIH.xhtml" />
+                    <h:button value="Iniciar Sesion" outcome="InicioSesionIH.xhtml" styleClass="button"/>
                     <p:spacer width="10"></p:spacer>
-                    <h:button value="Registrarse" outcome="RegistroIH.xthml" />
+                    <h:button value="Registrarse" outcome="RegistroIH.xthml" styleClass="button"/>
                 </h:form>
             </c:otherwise>
         </c:choose>

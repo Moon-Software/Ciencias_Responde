@@ -100,7 +100,7 @@ public class ManejadorPregunta {
             return "PantallaPreguntaIH.xhtml?faces-redirect=true&amp;pid=" + pregunta.getIdPregunta();
 
         } catch (Exception n) {
-            return "ErrorConexionIHF.xhtml?faces-redirect=true";
+            return "ErrorConexionIH.xhtml?faces-redirect=true";
         }
     }
 
@@ -130,11 +130,22 @@ public class ManejadorPregunta {
     public String borrarPregunta() {
         try {
             if (pregunta != null) {
+                Query q = ConexionBD.consultarBD("Pregunta.findByIdPregunta");
+                q.setParameter("idPregunta", pregunta.getIdPregunta());
+                try {
+                    pregunta = (Pregunta) q.getSingleResult();
+                } catch (NoResultException e) {
+                    FacesContext.getCurrentInstance().addMessage("avisos:aviso", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error! La pregunta ya fue eliminada.", "" ));
+                    FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+                    return "PantallaPrincipalIH.xhtml?faces-redirect=true";
+                }
                 ConexionBD.borrarBD(pregunta);
             }
+            FacesContext.getCurrentInstance().addMessage("avisos:aviso", new FacesMessage(FacesMessage.SEVERITY_INFO, "Exito! Se eliminó la pregunta.", "" ));
+            FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
             return "PantallaPrincipalIH.xhtml?faces-redirect=true";
         } catch (Exception n) {
-            return "ErrorConexionIHF.xhtml?faces-redirect=true";
+            return "ErrorConexionIH.xhtml?faces-redirect=true";
         }
     }
 

@@ -10,6 +10,7 @@ import com.moonsoft.proyecto.model.Usuario;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -61,10 +62,12 @@ public class Sesion {
                 context.getExternalContext().getSessionMap().put("usuario", l);
                 return "PantallaPrincipalIH.xhtml?faces-redirect=true";
             }
-
-            return "InicioSesionIH.xhtml?faces-redirect=true";
+            else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "El correo/contraseña son incorrectos."));
+                return "";
+            }
         } catch (Exception n) {
-            return "ErrorConexionIHF.xhtml?faces-redirect=true";
+            return "ErrorConexionIH.xhtml?faces-redirect=true";
         }
     }
 
@@ -79,7 +82,7 @@ public class Sesion {
             context.getExternalContext().invalidateSession();
             return "PantallaPrincipalIH.xhtml?faces-redirect=true";
         } catch (Exception n) {
-            return "ErrorConexionIHF.xhtml?faces-redirect=true";
+            return "ErrorConexionIH.xhtml?faces-redirect=true";
         }
     }
 
