@@ -35,7 +35,7 @@ public class ManejadorPregunta {
     private String busqueda;
 
     /**
-     * setea
+     * Setter de alguna búsqueda relacionada a una pregunta.
      *
      * @param busqueda
      */
@@ -44,18 +44,18 @@ public class ManejadorPregunta {
     }
 
     /**
-     * regresa cadena
+     * Regresa la búsqueda.
      *
-     * @return
+     * @return busqueda
      */
     public String getBusqueda() {
         return this.busqueda;
     }
 
     /**
-     * obtiene temas
+     * Método que regresa la lista de todos los temas disponibles
      *
-     * @return
+     * @return list_of_temas
      */
     public List<Tema> getTemas() {
         try {
@@ -71,9 +71,9 @@ public class ManejadorPregunta {
     }
 
     /**
-     * agrega una pregunta
+     * Método que agrega una pregunta a la BD y nos redirecciona a ésta.
      *
-     * @return
+     * @return enlace
      */
     public String agregarPregunta() {
         try {
@@ -105,9 +105,10 @@ public class ManejadorPregunta {
     }
 
     /**
-     * Revisa si una pregunta es de un usuario o administrador
+     * Revisa si una pregunta es de un usuario o administrador (los admins
+     * tienen más permisos para borrar).
      *
-     * @return si es borrable
+     * @return boolean.
      */
     public boolean esBorrable() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -122,7 +123,8 @@ public class ManejadorPregunta {
     }
 
     /**
-     * borra una pregunta
+     * Borra una pregunta de la base de datos y nos redirecciona a la pantalla
+     * de inicio.
      *
      */
     public String borrarPregunta() {
@@ -137,7 +139,7 @@ public class ManejadorPregunta {
     }
 
     /**
-     * Está contenida
+     * Revisa si una palabra está contenida en un arreglo de strings.
      *
      * @param a
      * @param ele
@@ -153,19 +155,19 @@ public class ManejadorPregunta {
     }
 
     /**
-     * va a la pregunta dado un id
+     * Nos redirecciona a una pregunta a partir de un id.
      *
      * @param id
-     * @return
+     * @return enlace
      */
     public String veAPregunta(Integer id) {
         return "PantallaPreguntaIH.xhtml?faces-redirect=true&pid=" + id;
     }
 
     /**
-     * obtiene el id
+     * Nos regresa el id de ésta pregunta, si es null, regresa 8.
      *
-     * @return
+     * @return id
      */
     public String getId() {
         if (pregunta == null) {
@@ -175,17 +177,19 @@ public class ManejadorPregunta {
     }
 
     /**
-     * obtiene pregunta
+     * Obtiene una pregunta a partir de un id.
      *
      * @param id
-     * @return
+     * @return pregunta
      */
     public Pregunta getPregunta(String id) {
         try {
-            if (id.equals("")) {
-                return null;
-            }
-            if (pregunta == null) {
+            if (pregunta != null) {
+                return pregunta;
+            } else {
+                if (id.equals("")) {
+                    return null;
+                }
                 try {
                     ConexionBD.conectarBD();
                     Query q = ConexionBD.consultarBD("Pregunta.findByIdPregunta");
@@ -203,10 +207,10 @@ public class ManejadorPregunta {
     }
 
     /**
-     * regresa preguntas
+     * Regresa una lista de preguntas a partir de un tema dado.
      *
      * @param tema
-     * @return
+     * @return list_of_preguntas
      */
     public List<Pregunta> getPreguntas(String tema) {
         try {
@@ -226,10 +230,10 @@ public class ManejadorPregunta {
     }
 
     /**
-     * asi
+     * Dada una cadena, quita acentos de ésta.
      *
      * @param str
-     * @return
+     * @return str_sin_acentos
      */
     public String deAccent(String str) {
         String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
@@ -238,17 +242,20 @@ public class ManejadorPregunta {
     }
 
     /**
+     * Método que regresa un enlace de para la pantalla de búsqueda.
      *
-     * @return
+     * @return enlace
      */
     public String buscaPreguntasPorPalabras() {
         return "PreguntasFiltradasIH.xhtml?faces-redirect=true&search=" + this.busqueda;
     }
 
     /**
+     * Método que regresa una lista de preguntas tal que éstas estén
+     * relacionadas con una búsqueda específica.
      *
      * @param busqueda
-     * @return
+     * @return list_of_preguntas.
      */
     public List<Pregunta> getPreguntasPorPalabras(String busqueda) {
         try {
@@ -292,6 +299,8 @@ public class ManejadorPregunta {
     }
 
     /**
+     * Método que verifica que un string esté al menos una vez en un arreglo de
+     * palabras.
      *
      * @param pregunta
      * @param palabras

@@ -30,7 +30,8 @@ and open the template in the editor.
         </div>
         <c:choose>
             <c:when test="#{pregs == null}">
-                <ui:include src="ErrorConexionIH.xhtml" />
+                <h:outputText value="¡ERROR DE CONEXIÓN! Compruebe su conexión a internet e 
+                      inténtelo más tarde. Pueden haber problemas con la conexión a la base de datos." />
             </c:when>
             <c:otherwise>
                 <c:choose>

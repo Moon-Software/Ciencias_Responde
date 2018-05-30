@@ -162,6 +162,9 @@ public class Pregunta implements Serializable {
         return "com.moonsoft.proyecto.model.Pregunta[ idPregunta=" + idPregunta + " ]";
     }
 
+    /**
+     * Método que guarda a esta pregunta a la BD.
+     */
     public void guardarBD() {
         ConexionBD.conectarBD();
         ConexionBD.insertarBD(this);

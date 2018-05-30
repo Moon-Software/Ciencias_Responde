@@ -14,7 +14,7 @@ and open the template in the editor.
       xmlns:ui="http://java.sun.com/jsf/facelets" 
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
-    <c:set var="preg" value="#{manejadorPregunta.getPregunta(param.pid)}"/> <!-- if and then redirect-->
+    <c:set var="preg" scope="session" value="#{manejadorPregunta.getPregunta(param.pid)}"/> <!-- if and then redirect-->
     <h:head>
         <title><h:outputText value="#{preg.titulo}"/></title>
         <h:outputStylesheet  library="css"  name="estilo.css" /> 
@@ -34,39 +34,41 @@ and open the template in the editor.
         </div>
 
         <div id="wrapper">
-
-            <ui:include rendered="false" src="PreguntaBorradaIH.xhtml"/>
-            <h:panelGroup rendered="#{preg != null}">
-                <h2><h:outputText value="#{preg.titulo}"/></h2>
-                <div id="content" style="margin:20px;">
-                    <h:panelGrid id="grid" columns="2" cellpadding="8">
-                        <h:panelGroup id="info" >
-                            <h:graphicImage value = "resources/icon.jpg" height="90px"/> 
-                            <br/>
-                            <h:outputText style="font-weight: bold; text-align: left;" value="#{preg.idUsuario.nombre}" />
+            <c:choose>
+                <c:when test="#{manejadorPregunta.getPregunta(param.pid) == null}">
+                    <ui:include src="PreguntaBorradaIH.xhtml"/>
+                </c:when> 
+                <c:otherwise>   
+                    <h2><h:outputText value="#{preg.titulo}"/></h2>
+                    <div id="content" style="margin:20px;">
+                        <h:panelGrid rendered="#{preg != null}" id="grid" columns="2" cellpadding="8">
+                            <h:panelGroup id="info" >
+                                <h:graphicImage value = "resources/icon.jpg" height="90px"/> 
+                                <br/>
+                                <h:link style="font-weight: bold; text-align: left;" value="#{preg.idUsuario.nombre}" 
+                                        outcome="PerfilIH.xhtml?uid=#{preg.idUsuario.idUsuario}"/>
+                            </h:panelGroup>
+                            <h:outputText value="#{preg.descripcion}"/>
+                        </h:panelGrid>
+                        <h:panelGroup rendered="#{preg != null}" layout="block" style="text-align:right">
+                            <h:form rendered="#{manejadorPregunta.esBorrable()}">
+                                <h:commandLink value="Remover" action="#{manejadorPregunta.borrarPregunta}"/>
+                            </h:form>
+                            <h:outputText value="#{preg.fecha}" />
                         </h:panelGroup>
-                        <h:outputText value="#{preg.descripcion}"/>
-                    </h:panelGrid>
-                    <div align="right">
+                        <h:panelGroup rendered="#{preg != null}" layout="block">
+                            <br/><hr/><br/>
 
-                        <h:form rendered="#{manejadorPregunta.esBorrable()}">
-                            <h:commandLink value="Remover" action="#{manejadorPregunta.borrarPregunta}"/>
-                        </h:form>
-
-                        <h:outputText value="#{preg.fecha}" />
+                            <ui:include src="ComentariosIH.xhtml" >
+                                <ui:param name="pr" value="#{manejadorPregunta.getPregunta(param.pid)}" />
+                                <ui:param name="pid" value="#{param.pid}" />
+                            </ui:include>
+                        </h:panelGroup>
                     </div>
-                    <br/>
-                    <hr/>
-                    <br/>
-
-                    <ui:include src="ComentariosIH.xhtml" >
-                        <ui:param name="preg" value="#{preg}" />
-                    </ui:include>
-
-                </div>
-            </h:panelGroup>
-
+                </c:otherwise>
+            </c:choose>
         </div>
+
 
         <div id="footer">
             MoonSoftware - 2018

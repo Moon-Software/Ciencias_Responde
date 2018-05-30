@@ -6,20 +6,13 @@
 package com.moonsoft.proyecto;
 
 import com.moonsoft.proyecto.model.ConexionBD;
-import com.moonsoft.proyecto.model.Pregunta;
-import com.moonsoft.proyecto.model.Tema;
 import com.moonsoft.proyecto.model.Usuario;
-import java.util.Date;
-import java.util.List;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import static javax.faces.context.FacesContext.getCurrentInstance;
-import javax.persistence.CascadeType;
 import javax.persistence.NoResultException;
-import javax.persistence.OneToOne;
 import javax.persistence.Query;
 
 /**
@@ -29,43 +22,87 @@ import javax.persistence.Query;
 @ManagedBean(name = "manejadorPerfil")
 @ViewScoped
 public class ManejadorPerfil {
-    
+
     private Usuario usr;
     
+    /**
+     * Método que obtiene un usuario a parti de un id.
+     *
+     * @param id
+     * @return usuario
+     */
     public Usuario getUsuario(String id) {
-       if (id.equals("")) return null;
-       if (usr == null) {
-           try {
-               ConexionBD.conectarBD();
-               Query q = ConexionBD.consultarBD("Usuario.findByIdUsuario");
-               q.setParameter("idUsuario", Integer.parseInt(id));
-               usr = (Usuario) q.getSingleResult();
-           }
-           catch (NoResultException e) {
-               return null;
-           }
-       }
-       return usr;
+        try {
+            if (id.equals("")) {
+                return null;
+            }
+            if (usr == null) {
+                try {
+                    ConexionBD.conectarBD();
+                    Query q = ConexionBD.consultarBD("Usuario.findByIdUsuario");
+                    q.setParameter("idUsuario", Integer.parseInt(id));
+                    usr = (Usuario) q.getSingleResult();
+                } catch (NoResultException e) {
+                    return null;
+                }
+            }
+            return usr;
+        } catch (Exception n) {
+            return null;
+        }
     }
     
+    /**
+     * Método que revisa si éste es el perfil de algún administrador.
+     * 
+     * @return boolean
+     */
     public static boolean esAdmin() {
-        FacesContext context = getCurrentInstance();
-        Usuario usr = (Usuario) context.getExternalContext().getSessionMap().get("usuario");
-        return usr.getEsAdmin();
+        try {
+            FacesContext context = getCurrentInstance();
+            Usuario usr = (Usuario) context.getExternalContext().getSessionMap().get("usuario");
+            return usr.getEsAdmin();
+        } catch (Exception n) {
+            return false;
+        }
     }
     
-    public String idActivo(){
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        Usuario u = (Usuario) ec.getSessionMap().get("usuario");
-        return u.getIdUsuario().toString();
+    /**
+     * Método que regresa el id del usuario que se encuentra activo.
+     * 
+     * @return id
+     */
+    public String idActivo() {
+        try {
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            Usuario u = (Usuario) ec.getSessionMap().get("usuario");
+            return u.getIdUsuario().toString();
+        } catch (Exception n) {
+            return null;
+        }
     }
     
+    /**
+     * Método que se redirige a un perfil a partir de un id.
+     *
+     * @param id
+     * @return enlace
+     */
     public String veAPerfil(Integer id) {
-        return "PerfilIH.xhtml?faces-redirect=true&uid="+id;
+        return "PerfilIH.xhtml?faces-redirect=true&uid=" + id;
     }
     
-    public String borrarUsuario(){
+    /**
+     * Método que se encarga de borrar a un usuario de la base de datos.
+     * 
+     * @return enlace
+     */
+    public String borrarUsuario() {
+        try{
         usr.eliminarBD();
         return "PantallaPrincipalIH.xhtml?faces-redirect=true";
+        }catch(Exception n){
+            return "ErrorConexionIHF.xhtml?faces-redirect=true";
+        }
     }
 }

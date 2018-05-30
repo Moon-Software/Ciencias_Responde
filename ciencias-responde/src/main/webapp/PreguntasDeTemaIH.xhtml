@@ -33,30 +33,39 @@ and open the template in the editor.
 
         <div id="wrapper">
             <div id="content">
-                <h:outputText value="Preguntas filtradas por el tema: #{param.tid}" />
                 <c:choose>
-                    <c:when test="#{sesion.estaConectado()}">
-                        <h:button outcome="PreguntaNuevaIH.xhtml" value="Crear nueva pregunta" />
+                    <c:when test="#{manejadorPregunta.getPreguntas(param.tid) == null}">
+                        <h:outputText value="¡ERROR DE CONEXIÓN! Compruebe su conexión a internet e 
+                                      inténtelo más tarde. Pueden haber problemas con la conexión a la base de datos." />
                     </c:when>
-                </c:choose>
-                <h:form> 
-                    <p:dataScroller value="#{manejadorPregunta.getPreguntas(param.tid)}" var="preg" chunkSize="10">
+                    <c:otherwise>
+                        <h:outputText value="Preguntas filtradas por el tema: #{param.tid}" />
+                        <c:choose>
+                            <c:when test="#{sesion.estaConectado()}">
+                                <h:button outcome="PreguntaNuevaIH.xhtml" value="Crear nueva pregunta" />
+                            </c:when>
+                        </c:choose>
 
-                        <h:panelGrid columns="2" style="width:100%">
+                        <h:form> 
+                            <p:dataScroller value="#{manejadorPregunta.getPreguntas(param.tid)}" var="preg" chunkSize="10">
 
-                            <p:outputPanel>
-                                <h:panelGrid columns="2" cellpadding="5">
-                                    <h:outputLink value="PantallaPreguntaIH.xhtml?pid=#{preg.idPregunta}">
-                                        <br/>
-                                        <h:outputText value="#{preg.titulo}" style="font-weight: bold"/>
-                                        <br/>
-                                    </h:outputLink>
+                                <h:panelGrid columns="2" style="width:100%">
+
+                                    <p:outputPanel>
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <h:outputLink value="PantallaPreguntaIH.xhtml?pid=#{preg.idPregunta}">
+                                                <br/>
+                                                <h:outputText value="#{preg.titulo}" style="font-weight: bold"/>
+                                                <br/>
+                                            </h:outputLink>
+                                        </h:panelGrid>
+                                        <hr />
+                                    </p:outputPanel>
                                 </h:panelGrid>
-                                <hr />
-                            </p:outputPanel>
-                        </h:panelGrid>
-                    </p:dataScroller>
-                </h:form>
+                            </p:dataScroller>
+                        </h:form>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
 

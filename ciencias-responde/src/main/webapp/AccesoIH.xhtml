@@ -24,17 +24,8 @@ and open the template in the editor.
                 <div class ="my-2 my-lg-0">
                     <h:form id="perfil">
                         <h:button value="Perfil" outcome = "PerfilIH.xhtml?uid=#{manejadorPerfil.idActivo()}"/>
-                    </h:form>
-                </div>
-                <div class ="my-2 my-lg-0">
-                    <h:form id="exit">
+                        <p:spacer width="10"></p:spacer>
                         <h:commandButton action="#{sesion.cerrarSesion()}" value="Cerrar Sesión"/>
-                    </h:form>
-                    <h:form>
-                        <p:inputText id="txt1" value="#{manejadorPregunta.busqueda}" required="true" label="Buscar">
-                            <f:validateLength minimum="2" />
-                        </p:inputText>
-                        <p:commandButton value="Buscar: " update="txt1" action="#{manejadorPregunta.buscaPreguntasPorPalabras}" />
                     </h:form>
                 </div>
             </c:when>
@@ -44,15 +35,16 @@ and open the template in the editor.
                     <h:button value="Iniciar Sesion" outcome="InicioSesionIH.xhtml" />
                     <p:spacer width="10"></p:spacer>
                     <h:button value="Registrarse" outcome="RegistroIH.xthml" />
-                    <h:form>
-                        <p:inputText id="txt1" value="#{manejadorPregunta.busqueda}" required="true" label="Buscar">
-                            <f:validateLength minimum="2" />
-                        </p:inputText>
-                        <p:commandButton value="Buscar: " update="txt1" action="#{manejadorPregunta.buscaPreguntasPorPalabras}" />
-                    </h:form>
                 </h:form>
             </c:otherwise>
         </c:choose>
+        
+        <h:form>
+            <p:inputText id="txt1" value="#{manejadorPregunta.busqueda}" required="true" label="Buscar">
+                <f:validateLength minimum="2" />
+            </p:inputText>
+            <p:commandButton value="Buscar: " update="txt1" action="#{manejadorPregunta.buscaPreguntasPorPalabras}" />
+        </h:form>
     </h:body>
 </html>
 

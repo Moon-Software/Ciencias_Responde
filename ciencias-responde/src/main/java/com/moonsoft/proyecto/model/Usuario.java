@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "usuario")
 @XmlRootElement
 @NamedQueries({
-   @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
+    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
     , @NamedQuery(name = "Usuario.findByIdUsuario", query = "SELECT u FROM Usuario u WHERE u.idUsuario = :idUsuario")
     , @NamedQuery(name = "Usuario.findByCorreo", query = "SELECT u FROM Usuario u WHERE u.correo = :correo")
     , @NamedQuery(name = "Usuario.findByNombre", query = "SELECT u FROM Usuario u WHERE u.nombre = :nombre")
@@ -72,9 +72,9 @@ public class Usuario implements Serializable {
     private boolean esAdmin;
     @Column(name = "sesion")
     private Boolean sesion;
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE},mappedBy = "idUsuario")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "idUsuario")
     private Collection<Comentario> comentarioCollection;
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE},mappedBy = "idUsuario")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "idUsuario")
     private Collection<Pregunta> preguntaCollection;
 
     public Usuario() {
@@ -199,13 +199,20 @@ public class Usuario implements Serializable {
     public String toString() {
         return "com.moonsoft.proyecto.model.Usuario[ idUsuario=" + idUsuario + " ]";
     }
-    
+
+    /**
+     * Método que guarda a este usuario a la BD.
+     */
     public void guardarBD() {
         ConexionBD.conectarBD();
-        ConexionBD.insertarBD(this); 
+        ConexionBD.insertarBD(this);
     }
-    
-    public void eliminarBD(){
+
+    /**
+     * Método que elimina éste usuario en la bd.
+     *
+     */
+    public void eliminarBD() {
         ConexionBD.conectarBD();
         ConexionBD.borrarBD(this);
     }

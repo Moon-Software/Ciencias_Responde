@@ -15,6 +15,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import static javax.faces.context.FacesContext.getCurrentInstance;
 import javax.persistence.Query;
 
 /**
@@ -28,7 +29,7 @@ public class ManejadorComentario {
     private List<Comentario> comentarios;
 
     /**
-     * agrega comentarios
+     * Método que se encarga de agregar un comentario a la base de datos.
      *
      * @param p
      * @return no
@@ -47,7 +48,7 @@ public class ManejadorComentario {
             c.setIdPregunta(p);
             c.setIdUsuario(u);
             //pregunta.setUsuario(usr);
-            c.guardarBD();
+            ConexionBD.insertarBD(c);
             return "PantallaPreguntaIH.xhtml?faces-redirect=true&amp;pid=" + p.getIdPregunta();
         } catch (Exception n) {
             return "ErrorConexionIHF.xhtml?faces-redirect=true";
@@ -55,7 +56,7 @@ public class ManejadorComentario {
     }
 
     /**
-     * Creates a new instance of ManejadorComentario
+     * Regresa una lista de comentarios a partir de una pregunta.
      *
      * @param p sdfsdf
      * @param id nada
@@ -76,14 +77,55 @@ public class ManejadorComentario {
     }
 
     /**
-     * hay comentarios
+     * Método que revisa si una pregunta tiene comentarios.
      *
      * @param p
      * @return si
      */
     public boolean hayComentarios(Pregunta p) {
+        try{
         getComentarios(p);
         return !comentarios.isEmpty();
+        }catch(Exception n){
+            return false;
+        }
     }
-
+    
+    /**
+     * Método que revisa si un comentario es borrable para un actor.
+     *
+     * @param c comentario
+     * @return boolean
+     */
+    public boolean esBorrable(Comentario c) {
+        ExternalContext ec = getCurrentInstance().getExternalContext();
+        Usuario u = (Usuario) ec.getSessionMap().get("usuario");
+        if (u == null) {
+            return false;
+        }
+        if (u.getEsAdmin()) {
+            return true;
+        }
+        return c.getIdUsuario().getIdUsuario().equals(u.getIdUsuario());
+    }
+    
+    /**
+     * Método que borra un comentario de la BD.
+     *
+     * @param c comentario
+     * @return boolean
+     */
+    public String borrarComentario(Comentario c) {
+        try {
+            String pid = c.getIdPregunta().getIdPregunta().toString();
+            if (c != null) {
+                ConexionBD.borrarBD(c);
+            }else{
+                return "ErrorConexionIHF.xhtml?faces-redirect=true";
+            }
+            return "PantallaPreguntaIH.xhtml?faces-redirect=true&amp;pid=" + pid;
+        } catch (Exception n) {
+            return "ErrorConexionIHF.xhtml?faces-redirect=true";
+        }
+    }
 }

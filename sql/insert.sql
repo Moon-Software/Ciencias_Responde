@@ -1,4 +1,5 @@
-INSERT INTO usuario (correo, nombre, contrasenia, f_registro, es_admin) VALUES ('ad@gmail.com', 'carlos', '1234', '01/01/98', True);
+INSERT INTO usuario (correo, nombre, contrasenia, f_registro, es_admin) VALUES ('ad@mail.com', 'carlos', '1234', '01/01/98', True);
+INSERT INTO usuario (correo, nombre, contrasenia, f_registro, es_admin) VALUES ('ad2@mail.com', 'juan', '1234', '01/01/98', False);
 
 
 INSERT INTO tema (nombre, descripcion) VALUES ('Horarios', 'Todo lo referente a los horarios.');

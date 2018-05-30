@@ -10,13 +10,17 @@ import com.moonsoft.proyecto.model.Usuario;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.persistence.Lob;
 import javax.persistence.Query;
 import org.primefaces.model.UploadedFile;
+import static org.apache.commons.codec.binary.Base64.encodeBase64;
+import org.primefaces.event.FileUploadEvent;
 
 /**
  *
@@ -26,89 +30,76 @@ import org.primefaces.model.UploadedFile;
 @ViewScoped
 public class UsuarioServicio {
 
+    // Definición del tipo de algoritmo a utilizar (AES, DES, RSA)
+    private final static String alg = "AES";
+    // Definición del modo de cifrado a utilizar
+    private final static String cI = "AES/CBC/PKCS5Padding";
     private String correo;
     private String nombre;
     private String contrasenia;
-    @Lob
+    private boolean esAdmin;
     private UploadedFile file;
 
-    /**
-     *
-     * @return
-     */
     public UploadedFile getFile() {
         return file;
     }
 
-    /**
-     *
-     * @param file
-     */
     public void setFile(UploadedFile file) {
         this.file = file;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getCorreo() {
         return correo;
     }
 
-    /**
-     *
-     * @param correo
-     */
     public void setCorreo(String correo) {
         this.correo = correo;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getNombre() {
         return nombre;
     }
 
-    /**
-     *
-     * @param nombre
-     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getContrasenia() {
         return contrasenia;
     }
 
-    /**
-     *
-     * @param contrasenia
-     */
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
     }
 
+    public boolean getEsAdmin() {
+        return esAdmin;
+    }
+
+    public void setEsAdmin(boolean esAdmin) {
+        this.esAdmin = esAdmin;
+    }
+
+    public void fileUploadListener(FileUploadEvent e) {
+        this.file = e.getFile();
+    }
+    
     /**
-     *
-     * @return
+     * Método que se agrega un usuario a la base de datos.
+     * 
+     * @return enlace
      */
-    public String agregarUsuario() {
+    public String agregarUsuario() throws Exception {
         try {
+            String key = "92AE31A79FEEB2A3"; //llave
+            String iv = "0123456789ABCDEF"; // vector de inicialización
             String respuesta = "";
             Pattern correoVal = Pattern
                     .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                             + "ciencias\\.unam\\.mx$");
             Matcher mather = correoVal.matcher(correo);
             if (contrasenia.length() >= 8) {
-                if (true == mather.find()) {
+                if (mather.find() == true) {
                     ConexionBD.conectarBD();
                     Query q = ConexionBD.consultarBD("Usuario.findByCorreo");
                     q.setParameter("correo", correo);
@@ -116,7 +107,16 @@ public class UsuarioServicio {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "El usuario ya existe."));
                         return "";
                     }
-                    Usuario usr = new Usuario(0, correo, nombre, contrasenia, new Date(), false);
+                    Usuario usr = new Usuario(0, correo, nombre, encrypt(key, iv, contrasenia), new Date(), false);
+
+                    if (file != null) {
+                        if (file.getContents() == null) {
+                            System.out.println("Diego es dios");
+                        }
+                        usr.setFoto(file.getContents());
+                    } else {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "La imagen no debe ser vacioa"));
+                    }
                     Email em = new Email(correo, nombre, contrasenia);
                     em.sendEmail();
                     usr.guardarBD();
@@ -125,11 +125,28 @@ public class UsuarioServicio {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "El correo debe tener dominio @ciencias.unam.mx"));
                 }
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "La contraseña de contener al menos 8 caracteres"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "La contraseÃ±a de contener al menos 8 caracteres"));
             }
             return respuesta;
         } catch (Exception n) {
             return "ErrorConexionIHF.xhtml?faces-redirect=true";
         }
+    }
+    
+    /**
+     * Método que se encarga de cifrar una contrasenia.
+     *
+     * @param key
+     * @param iv
+     * @param cleartext
+     * @return contrasenia
+     */
+    public static String encrypt(String key, String iv, String cleartext) throws Exception {
+        Cipher cipher = Cipher.getInstance(cI);
+        SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(), alg);
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv.getBytes());
+        cipher.init(Cipher.ENCRYPT_MODE, skeySpec, ivParameterSpec);
+        byte[] encrypted = cipher.doFinal(cleartext.getBytes());
+        return new String(encodeBase64(encrypted));
     }
 }

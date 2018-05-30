@@ -27,20 +27,36 @@ public class ConexionBD {
     private ConexionBD() {
     }
 
+    /**
+     * Método que nos conecta a la base de datos.
+     *
+     * @return no
+     */
     public static void conectarBD() {
         try {
             if (emf == null) {
                 emf = Persistence.createEntityManagerFactory("APP1PU");
             }
-        } catch (PersistenceException pe) {}
+        } catch (PersistenceException pe) {
+        }
     }
 
+    /**
+     * Método que nos descomecta de la BD.
+     *
+     * @return no
+     */
     public static void desconectarBD() {
         if (emf != null) {
             emf.close();
         }
     }
 
+    /**
+     * Método que inserta un objeto en la BD.
+     *
+     * @param o
+     */
     public static void insertarBD(Object o) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
@@ -49,11 +65,12 @@ public class ConexionBD {
         em.close();
     }
 
-    public static void actualizarBD() {
-
-    }
-    
-    public static void borrarBD(Object o){
+    /**
+     * Método que borra un objeto de la base de datos.
+     *
+     * @return no
+     */
+    public static void borrarBD(Object o) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         if (!em.contains(o)) {
@@ -64,13 +81,14 @@ public class ConexionBD {
         em.close();
     }
 
+    /**
+     * Método que guarda devuelve una consulta a partir de una cadena.
+     *
+     * @return consulta-
+     */
     public static Query consultarBD(String q) {
         EntityManager em = emf.createEntityManager();
         return em.createNamedQuery(q);
-    }
-
-    public static void seleccionarTodosBD() {
-
     }
 
 }

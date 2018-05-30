@@ -18,33 +18,38 @@ and open the template in the editor.
     </h:head>
 
     <h:body id="comentarioBody">
-        <h:form id="areacom" rendered="#{sesion.estaConectado()}">
-            <p:inputTextarea id="contenido" rows="6" cols="50" maxlength="1000" autoResize="false"  style="resize: none" />
-            <h:commandButton value ="OK" action="#{manejadorComentario.agregarComentario(preg)}" />
-        </h:form>
-        <c:choose>
-            <c:when test="#{manejadorComentario.hayComentarios(preg)}">
-                <ui:repeat id="comentariosDis" value="#{manejadorComentario.getComentarios(preg)}" var="com"  >
-                    <div  id="comentario">
-                        <h:panelGrid style="width:100%" id="grid" columns="2"  bgcolor="#bcaaa4" cellpadding="2">
-                            <h:panelGroup id="info" style="width:20%">
-                                <div align="center">
-                                    <h:graphicImage value = "resources/icon.jpg" height="70px"/> 
-                                    <br/>
-                                    <h:outputText style="font-weight: bold; text-align: center;" value="#{com.idUsuario.nombre}" />
-                                </div>
-                            </h:panelGroup>
-                            <h:outputText value="#{com.contenido}" />
-                        </h:panelGrid>
-                    </div>
-                </ui:repeat>
-            </c:when>
+ 
+                <h:form id="areacom" rendered="#{sesion.estaConectado()}">
+                    <p:inputTextarea id="contenido" rows="6" cols="50" maxlength="1000" autoResize="false"  style="resize: none" />
+                    <h:commandButton value ="OK" action="#{manejadorComentario.agregarComentario(manejadorPregunta.getPregunta(null))}" />
+                </h:form>
 
-            <c:otherwise>
-                <div class ="my-2 my-lg-0">
-                    <h:outputText value="No hay comentarios para esta pregunta."/>
-                </div>
-            </c:otherwise>
-        </c:choose>
+                <c:choose>
+                    <c:when test="#{manejadorComentario.hayComentarios(pr)}">
+                        <ui:repeat id="comentariosDis" value="#{manejadorComentario.getComentarios(pr)}" var="com"  >
+                            <div  id="comentario">
+                                <h:panelGrid style="width:100%" id="grid" columns="2"  bgcolor="#bcaaa4" cellpadding="2">
+                                    <h:panelGroup id="info" style="width:20%">
+                                        <div align="center">
+                                            <h:graphicImage value = "resources/icon.jpg" height="70px"/> 
+                                            <br/>
+                                            <h:outputText style="font-weight: bold; text-align: center;" value="#{com.idUsuario.nombre}" />
+                                            <h:form rendered="#{manejadorComentario.esBorrable(com)}">
+                                                <h:commandLink value="Remover" action="#{manejadorComentario.borrarComentario(com)}"/>
+                                            </h:form>
+                                        </div>
+                                    </h:panelGroup>
+                                    <h:outputText value="#{com.contenido}" />
+                                </h:panelGrid>
+                            </div>
+                        </ui:repeat>
+                    </c:when>
+
+                    <c:otherwise>
+                        <div class ="my-2 my-lg-0">
+                            <h:outputText value="No hay comentarios para esta pregunta."/>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
     </h:body>
 </html>
